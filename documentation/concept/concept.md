@@ -92,14 +92,13 @@ The following list of features are derived from the previous workflow analysis, 
 
 As a starting point, in respect for the timeframe and complexity, for this endeavour and the scope of the Mod-164 project I would like to define and limit myself to the following requrements.
 
+- Basic user management
 - You should be able to create groups for projects and gigs with specific members
 - There is a global group with all band members
 - You should be able to make global polls for possible gigs to determen cast and feasability
 - You should be able to create groups out of global gig polls
 - Band members should be able to make date polls for rehearsals
 - You should be able to directly create rehearsals or gigs from a poll result
-- Band members should be able to remark attendance for rehearsals or gigs
-- Band member attendance should be carried over from the origin poll, if answered
 
 Most importantly I want to take future features and development, at every step of this project, in to consideration and implement accordingly. For example the implementation of multi-band capability would exceed the scope of this project, yet without precaution at this state will, without appropriate preparation and consideration, exponentially increase work and complexity down the line.
 
