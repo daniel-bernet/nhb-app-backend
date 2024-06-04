@@ -108,6 +108,8 @@ Most importantly I want to take future features and development, at every step o
 
 ![ERD](/documentation/concept/assets/ERD_NHB-APP.svg)
 
+Each table further contains the fields `created_at` and `updated_at` not shown within the ERD.
+
 ### Database description
 
 For this project I will use a Postgres-15 DB deployed as a docker-container on my linux-based home server.
