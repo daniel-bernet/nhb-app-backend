@@ -3,7 +3,7 @@
 const express = require('express');
 const cors = require('cors');
 const { Sequelize } = require('sequelize');
-const config = require('./config/config.js');
+const config = require('./config/config');
 
 const app = express();
 const PORT = config.development.backendport;
@@ -28,8 +28,13 @@ const sequelize = new Sequelize(
     app.use(cors());
     app.use(express.json());
 
-    //const accountRoutes = require('./routes/accounts');
-    //app.use('/api/account', accountRoutes);
+    // Account endpoints
+    const accountRoutes = require('./routes/account');
+    app.use('/account', accountRoutes);
+
+    // Group endpoints
+    const groupRoutes = require('./routes/group');
+    app.use('/group', groupRoutes);
 
     app.get('/', (req, res) => { //test route, remove for production!!!!!
       res.status(200).send('Hello World!');
