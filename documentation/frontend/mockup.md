@@ -51,10 +51,6 @@ The user tab is dedicated to personal account management and application setting
 
 These functionalities will provide users with full control over their account settings and personal information.
 
-## Final remarks
-
-I've breafly worked with the ionic-angular technology as part of a 5-day ÜK. There for I'm not well versed within the ionic environment. This said this mockup is more of a guidline and help for frontend development as I'm going to be discovering the capabilities and options of ionic and its components resulting in a, most likely, uncomparable look and feel in the final frontend implementation of this application.
-
 ## Final Remarks
 
 My experience with Ionic-Angular technology was briefly over a five-day ÜK. Consequently, I am not that familiar with the Ionic framework. Given this, the provided mockup primarily serves as a guideline for the frontend development process. As I discover the extensive capabilities and components offered by Ionic, the actual implementation may there for differ significantly in both look and feel as well as functionality from this initial design.

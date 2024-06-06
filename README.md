@@ -8,5 +8,9 @@ Within this readme I will outline general information, for further information a
 
 - [NoHeadBand Website](https://noheadband.ch/)
 - [Project Concept](/documentation/concept/concept.md)
-- [API Documentation](/documentation/backend/api-endpoints.md)
-- [Mockup](/documentation/mockup/mockup.md)
+- [Mockup](/documentation/frontend/mockup.md)
+- [API-Endpoints](/documentation/backend/api-endpoints.md)
+- [DB-Schema](/documentation/backend/db-tables.md)
+- [General Backend Documentation](/documentation/backend/backend-documentation.md)
+- [Setup Guide](/documentation/backend/setup.md)
+- [Deployment Guide](/documentation/backend/deployment.md)
