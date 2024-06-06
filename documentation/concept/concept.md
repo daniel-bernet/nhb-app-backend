@@ -4,7 +4,7 @@
 
 ### Target
 
-The Target of this project is to build a software solution for our band and members to ease organisation, communication and planning. To view the project and band specific nomenclature consult [this](/documentation/nomenclature.md) document.
+The Target of this project is to build a software solution for our band and members to ease organisation, communication and planning.
 
 ### Why this project?
 
@@ -134,6 +134,9 @@ Backend related documentation can be found using the following links.
 
 - [API-Endpoints](/documentation/backend/api-endpoints.md)
 - [DB-Schema](/documentation/backend/db-tables.md)
+- [General Backend Documentation](/documentation/backend/backend-documentation.md)
+- [Setup Guide](/documentation/backend/setup.md)
+- [Deployment Guide](/documentation/backend/deployment.md)
 
 ## Frontend
 
@@ -147,17 +150,17 @@ For the scope of this project I will deploy my application on my own device. Any
 
 ### Frontend Documentation & Mockup
 
-Frontend related documentation and mockup can be found using the following links.
+Frontend related documentation and mockup, including description, can be found using the following links.
 
 - [Mobile application Mockup](/documentation/frontend/mockup.md)
-- [Frontend Documentation](/documentation/frontend/frontend.md)
+- [Frontend Documentation](/documentation/frontend/frontend-documentation.md)
 
 ## Component diagram
 
-The following diagram displays the components of this project and their connection. I wont further go in to detail as I've talked about every component of this diagram in previous chapters.
+The following diagram displays the components of this project and their connection. I wont further go in to detail as I've talked about every part of this diagram in previous chapters.
 
 ![component-diagram](/documentation/concept/assets/component_diagram_NHB-APP.svg)
 
 ## Project planning
 
-My project planning can be viewed within [this](/documentation/project_plan.xlsx), continuously evolving, excel document.
+My project planning can be viewed within [this](/documentation/project_plan.xlsx), continuously evolving, excel document. The past timeline of the project-plan displays the active work and development done as part of this project.
