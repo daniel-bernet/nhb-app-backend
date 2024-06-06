@@ -1,5 +1,11 @@
 # API Endpoint Documentation
 
+## Endpoints overview
+
+### Needed Endpoints
+
+### Done Endpoints
+
 ## Examples
 
 ### Template for New Endpoints
