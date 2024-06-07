@@ -1,7 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  class Poll extends Model {}
+  class Poll extends Model { }
 
   Poll.init({
     PollID: {
@@ -39,7 +39,11 @@ module.exports = (sequelize) => {
 
   Poll.associate = function (models) {
     this.belongsToMany(models.Question, {
-      through: models.PollQuestionJoin,
+      through: {
+        model: models.PollQuestionJoin,
+        unique: false,
+        onDelete: 'CASCADE'
+      },
       foreignKey: 'PollID',
       otherKey: 'QuestionID',
       as: 'questions'

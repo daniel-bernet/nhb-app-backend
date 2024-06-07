@@ -36,6 +36,14 @@ const sequelize = new Sequelize(
     const groupRoutes = require('./routes/group');
     app.use('/group', groupRoutes);
 
+    // Type endpoints
+    const typeRoutes = require('./routes/type');
+    app.use('/type', typeRoutes);
+
+    // Sentiment endpoints
+    const sentimentRoutes = require('./routes/sentiment');
+    app.use('/sentiment', sentimentRoutes);
+
     app.get('/', (req, res) => { //test route, remove for production!!!!!
       res.status(200).send('Hello World!');
     });

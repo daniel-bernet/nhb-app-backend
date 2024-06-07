@@ -20,7 +20,7 @@ node server.js
 Build container image using the following command:
 
 ```bash
-docker container -t nhb-app-backend build .
+docker build -t nhb-app-backend .
 ```
 
 Push container image to docker-hub using the following command:

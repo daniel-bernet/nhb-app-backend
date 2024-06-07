@@ -38,14 +38,26 @@ router.post('/create', verifyToken, async (req, res) => {
 // Delete Group endpoint
 router.delete('/delete/:groupId', verifyToken, async (req, res) => {
     const { groupId } = req.params;
+    const transaction = await sequelize.transaction();
     try {
-        const group = await Group.findByPk(groupId);
+        const group = await Group.findByPk(groupId, { transaction });
         if (!group) {
+            await transaction.rollback();
             return res.status(404).json({ error: 'Group not found' });
         }
-        await group.destroy();
-        res.status(200).json({ message: 'Group successfully deleted' });
+
+        await Answer.destroy({ where: { GroupID: groupId }, transaction });
+        await PollQuestionJoin.destroy({ where: { PollID: groupId }, transaction });
+        await Question.destroy({ where: { GroupID: groupId }, transaction });
+        await Poll.destroy({ where: { GroupID: groupId }, transaction });
+        await Event.destroy({ where: { GroupID: groupId }, transaction });
+        await GroupMember.destroy({ where: { GroupID: groupId }, transaction });
+        await group.destroy({ transaction });
+
+        await transaction.commit();
+        res.status(200).json({ message: 'Group and all related data successfully deleted' });
     } catch (error) {
+        await transaction.rollback();
         res.status(500).json({ error: error.message });
     }
 });
@@ -87,13 +99,30 @@ router.patch('/edit/:groupId', verifyToken, async (req, res) => {
 // Add Member to Group
 router.post('/add-member', verifyToken, async (req, res) => {
     const { groupId, accountId } = req.body;
+    const transaction = await sequelize.transaction();
     try {
         const member = await GroupMember.create({
             GroupID: groupId,
             AccountID: accountId
-        });
-        res.status(201).json({ message: 'Member added successfully', member });
+        }, { transaction });
+
+        // Retrieve all open polls to set default answers
+        const polls = await Poll.findAll({ where: { GroupID: groupId, IsClosed: false }, transaction });
+        for (const poll of polls) {
+            const questions = await Question.findAll({ where: { PollID: poll.PollID }, transaction });
+            for (const question of questions) {
+                await Answer.create({
+                    QuestionID: question.QuestionID,
+                    GroupMemberID: member.GroupMemberID,
+                    OptionID: 'UNANSWERED_OPTION_ID', // This should be replaced with the actual ID once available
+                }, { transaction });
+            }
+        }
+
+        await transaction.commit();
+        res.status(201).json({ message: 'Member added successfully and default answers set for open polls', member });
     } catch (error) {
+        await transaction.rollback();
         res.status(500).json({ error: error.message });
     }
 });
@@ -101,18 +130,80 @@ router.post('/add-member', verifyToken, async (req, res) => {
 // Remove Member from Group
 router.delete('/remove-member', verifyToken, async (req, res) => {
     const { groupId, accountId } = req.body;
+    const transaction = await sequelize.transaction();
     try {
         const member = await GroupMember.findOne({
             where: {
                 GroupID: groupId,
                 AccountID: accountId
-            }
+            },
+            transaction
         });
         if (!member) {
+            await transaction.rollback();
             return res.status(404).json({ error: 'Member not found' });
         }
-        await member.destroy();
-        res.status(200).json({ message: 'Member removed successfully' });
+
+        await Answer.destroy({
+            where: { GroupMemberID: member.GroupMemberID },
+            transaction
+        });
+
+        await member.destroy({ transaction });
+
+        const remainingMembers = await GroupMember.count({
+            where: { GroupID: groupId },
+            transaction
+        });
+        if (remainingMembers === 0) {
+            await Event.destroy({ where: { GroupID: groupId }, transaction });
+            await Poll.destroy({ where: { GroupID: groupId }, transaction });
+            await Group.destroy({ where: { GroupID: groupId }, transaction });
+        }
+
+        await transaction.commit();
+        const message = remainingMembers === 0 ? 'Member removed and group deleted due to no remaining members' : 'Member removed successfully';
+        res.status(200).json({ message });
+    } catch (error) {
+        await transaction.rollback();
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
+// Get Events for a Group
+router.get('/events/:groupId', verifyToken, async (req, res) => {
+    const { groupId } = req.params;
+    try {
+        const group = await Group.findByPk(groupId, {
+            include: [{
+                model: sequelize.models.Event,
+                as: 'events'
+            }]
+        });
+        if (!group) {
+            return res.status(404).json({ error: 'Group not found' });
+        }
+        res.json(group.events);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Get Polls for a Group
+router.get('/polls/:groupId', verifyToken, async (req, res) => {
+    const { groupId } = req.params;
+    try {
+        const group = await Group.findByPk(groupId, {
+            include: [{
+                model: sequelize.models.Poll,
+                as: 'polls'
+            }]
+        });
+        if (!group) {
+            return res.status(404).json({ error: 'Group not found' });
+        }
+        res.json(group.polls);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

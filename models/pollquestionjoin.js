@@ -1,7 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  class PollQuestionJoin extends Model {}
+  class PollQuestionJoin extends Model { }
 
   PollQuestionJoin.init({
     PollQuestionID: {
@@ -23,6 +23,17 @@ module.exports = (sequelize) => {
     modelName: 'PollQuestionJoin',
     tableName: 'PollQuestionJoins'
   });
+
+  PollQuestionJoin.associate = function (models) {
+    this.belongsTo(models.Poll, {
+      foreignKey: 'PollID',
+      onDelete: 'CASCADE'
+    });
+    this.belongsTo(models.Question, {
+      foreignKey: 'QuestionID',
+      onDelete: 'CASCADE'
+    });
+  };
 
   return PollQuestionJoin;
 };
