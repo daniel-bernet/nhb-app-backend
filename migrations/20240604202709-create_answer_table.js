@@ -25,7 +25,6 @@ module.exports = {
           model: 'GroupMembers',
           key: 'GroupMemberID'
         },
-        onDelete: 'CASCADE'
       },
       OptionID: {
         allowNull: false,
@@ -34,7 +33,6 @@ module.exports = {
           model: 'Options',
           key: 'OptionID'
         },
-        onDelete: 'CASCADE'
       },
       createdAt: {
         allowNull: false,

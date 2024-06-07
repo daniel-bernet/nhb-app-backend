@@ -25,7 +25,6 @@ module.exports = {
           model: 'Options',
           key: 'OptionID'
         },
-        onDelete: 'CASCADE'
       },
       createdAt: {
         allowNull: false,

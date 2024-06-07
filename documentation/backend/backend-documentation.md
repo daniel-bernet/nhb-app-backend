@@ -33,13 +33,17 @@ As part of this project the `Band` table will only contain our band, `NoHeadBand
 
 Options will be hardcoded for the time beeing. An answer always starts out with the default, unanswered, option. Option creation would be a desirable future feature. The following options will be available:
 
-|OptionID|SentimentID|Option|Description|
-|-|-|-|-|
-|1|UUID of "u"|unanswered|Standart for unanswered questions|
-|2|UUID of "y"|yes|Give a positive answer|
-|3|UUID of "n"|no|Give a negative answer|
-|4|UUID of "i"|i don't know yet|Pass up on giving an answer at this moment|
-|5|UUID of "i"|i don't care|Give undefinitive answer|
+|SentimentID|Option|Description|
+|-|-|-|
+|1|unanswered|Standart for unanswered questions|
+|2|no|Give a negative answer|
+|3|yes|Give a positive answer|
+|4|i don't know yet|Pass up on giving an answer at this moment|
+|4|i don't care|Give undefinitive answer|
+
+### Migration scripts
+
+To migrate and set up my DB I make use of the sequelize migration and seeder scripts capabilities. To respect the project-requrements I've translated all the migration and seeder scripts in to the postgres SQL-dialect. The corresponding files are deposited [here](/documentation/sql-scripts/).
 
 ## Future features, additions and changes
 
