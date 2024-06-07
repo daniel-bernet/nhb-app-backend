@@ -6,12 +6,12 @@
 
 The sentiment table on the DB describes how an answer-option should be evaluated. The following character representations are present:
 
-|Character|Sentiment|Usecase|
-|-|-|-|
-|u|unanswered|standart for ananswered questions|
-|n|no|negative response|
-|y|yes|positive response|
-|i|irrelevant|the response is irrelevant|
+|SentimentID|Character|Sentiment|Usecase|
+|-|-|-|-|
+|1|u|unanswered|standart for unanswered questions|
+|2|n|no|negative response|
+|3|y|yes|positive response|
+|4|i|irrelevant|the response is irrelevant|
 
 ### Types
 
@@ -33,8 +33,13 @@ As part of this project the `Band` table will only contain our band, `NoHeadBand
 
 Options will be hardcoded for the time beeing. An answer always starts out with the default, unanswered, option. Option creation would be a desirable future feature. The following options will be available:
 
-- add table here with options
-- default answer (unanswered)! -> add to poll-api-endpoint for answer creation
+|OptionID|SentimentID|Option|Description|
+|-|-|-|-|
+|1|UUID of "u"|unanswered|Standart for unanswered questions|
+|2|UUID of "y"|yes|Give a positive answer|
+|3|UUID of "n"|no|Give a negative answer|
+|4|UUID of "i"|i don't know yet|Pass up on giving an answer at this moment|
+|5|UUID of "i"|i don't care|Give undefinitive answer|
 
 ## Future features, additions and changes
 

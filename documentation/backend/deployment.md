@@ -2,7 +2,7 @@
 
 ## Run locally
 
-Make sure your DB is ready, ie. migrated and populated:
+Make sure your DB is ready, ie. migrated and seeded:
 
 ```bash
 npx sequelize-cli db:migrate

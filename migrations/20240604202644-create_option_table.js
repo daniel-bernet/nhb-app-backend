@@ -11,12 +11,11 @@ module.exports = {
       },
       SentimentID: {
         allowNull: false,
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
         references: {
           model: 'Sentiments',
           key: 'SentimentID'
         },
-        onDelete: 'CASCADE'
       },
       Option: {
         allowNull: false,

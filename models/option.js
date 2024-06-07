@@ -1,7 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  class Option extends Model {}
+  class Option extends Model { }
 
   Option.init({
     OptionID: {
@@ -11,7 +11,7 @@ module.exports = (sequelize) => {
       allowNull: false
     },
     SentimentID: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER,
       allowNull: false
     },
     Option: {

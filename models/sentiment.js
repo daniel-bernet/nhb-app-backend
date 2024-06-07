@@ -1,14 +1,14 @@
 const { Model, DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  class Sentiment extends Model {}
+  class Sentiment extends Model { }
 
   Sentiment.init({
     SentimentID: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.INTEGER,
       primaryKey: true,
-      allowNull: false
+      allowNull: false,
+      autoIncrement: true
     },
     Sentiment: {
       type: DataTypes.STRING(1),
