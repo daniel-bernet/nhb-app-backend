@@ -44,6 +44,22 @@ const sequelize = new Sequelize(
     const sentimentRoutes = require('./routes/sentiment');
     app.use('/sentiment', sentimentRoutes);
 
+    // Poll endpoints
+    const pollRoutes = require('./routes/poll');
+    app.use('/poll', pollRoutes);
+
+    // Event endpoints
+    const eventRoutes = require('./routes/event');
+    app.use('/event', eventRoutes);
+
+    // Question endpoints
+    const questionRoutes = require('./routes/question');
+    app.use('/question', questionRoutes);
+
+    // Answer endpoints
+    const answerRoutes = require('./routes/answer');
+    app.use('/answer', answerRoutes);
+
     app.get('/', (req, res) => { //test route, remove for production!!!!!
       res.status(200).send('Hello World!');
     });

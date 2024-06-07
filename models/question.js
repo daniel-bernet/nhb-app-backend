@@ -1,7 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  class Question extends Model {}
+  class Question extends Model { }
 
   Question.init({
     QuestionID: {
@@ -39,6 +39,13 @@ module.exports = (sequelize) => {
       otherKey: 'PollID',
       as: 'polls'
     });
+    Question.associate = function (models) {
+      this.hasMany(models.Answer, {
+        foreignKey: 'QuestionID',
+        onDelete: 'CASCADE',
+        as: 'answers'
+      });
+    };
   };
 
   return Question;

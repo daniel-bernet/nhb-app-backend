@@ -43,3 +43,4 @@ Options will be hardcoded for the time beeing. An answer always starts out with 
 ## Dev-Notes
 
 - take a look at cascade configuration of sequelize models to ensure correct data deletion. test that no residual data is left behind wich would compremise data integrity of the database as all endpoints have been implemented!
+- include answers in get poll info endpoint

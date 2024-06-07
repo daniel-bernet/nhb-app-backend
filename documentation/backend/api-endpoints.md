@@ -14,10 +14,7 @@ All done.
 
 #### Event - Needed
 
-- create event
-- get info
-- delete event
-- edit event info
+All done.
 
 #### Poll - Needed
 
@@ -25,13 +22,11 @@ All done.
 
 #### Question - Needed
 
-- edit question
-- delete question
+All done.
 
 #### Answer - Needed
 
-- get answers
-- edit answer
+All done.
 
 #### Type - Needed
 
@@ -67,6 +62,11 @@ All done.
 
 #### Event - Done
 
+- create event
+- get info
+- delete event
+- edit event info
+
 #### Poll - Done
 
 - create poll (includes question creation as well as answer creation)
@@ -78,7 +78,12 @@ All done.
 
 #### Question - Done
 
+- edit question
+- delete question
+
 #### Answer - Done
+
+- edit answer
 
 #### Type - Done
 
@@ -520,3 +525,125 @@ All done.
 |                   | **Code**: 500 Internal Server Error          |
 |                   | **Content**: `{ "error": "Error message here" }` |
 | **Description**   | This endpoint closes a poll, preventing any further responses by setting its IsClosed status to true. |
+
+## Event Endpoints
+
+### Create Event
+
+| Aspect            | Details                                       |
+|-------------------|-----------------------------------------------|
+| **Route**         | `/event/create`                                     |
+| **HTTP Method**   | POST                                          |
+| **Headers**       | `Authorization`: Bearer Token, `Content-Type`: application/json |
+| **Request Body**  | `{ "GroupID": "UUID", "TypeID": "UUID", "Title": "String", "Description": "String", "Location": "String", "Date": "Date", "Duration": "Integer" }` |
+| **Success Response** | **Code**: 201 Created                    |
+|                   | **Content**: `{ "message": "Event created successfully", "event": {...} }` |
+| **Error Response**| **Code**: 500 Internal Server Error          |
+|                   | **Content**: `{ "error": "Error message here" }` |
+| **Description**   | Creates a new event linked to a specific group and type, storing all relevant details such as title, description, location, date, and duration. |
+
+### Get Event Information
+
+| Aspect            | Details                                       |
+|-------------------|-----------------------------------------------|
+| **Route**         | `/event/info/:eventId`                              |
+| **HTTP Method**   | GET                                           |
+| **Headers**       | `Authorization`: Bearer Token, `Content-Type`: application/json |
+| **Query Parameters** | `eventId` (UUID): ID of the event         |
+| **Request Body**  | None                                          |
+| **Success Response** | **Code**: 200 OK                         |
+|                   | **Content**: `{ "event": {...} }`            |
+| **Error Response**| **Code**: 404 Not Found                      |
+|                   | **Content**: `{ "error": "Event not found" }`|
+|                   | **Code**: 500 Internal Server Error          |
+|                   | **Content**: `{ "error": "Error message here" }` |
+| **Description**   | Retrieves detailed information about a specific event, including its linkage to a group and event type. |
+
+### Delete Event
+
+| Aspect            | Details                                       |
+|-------------------|-----------------------------------------------|
+| **Route**         | `/event/delete/:eventId`                            |
+| **HTTP Method**   | DELETE                                        |
+| **Headers**       | `Authorization`: Bearer Token, `Content-Type`: application/json |
+| **Query Parameters** | `eventId` (UUID): ID of the event to delete |
+| **Request Body**  | None                                          |
+| **Success Response** | **Code**: 200 OK                         |
+|                   | **Content**: `{ "message": "Event successfully deleted" }` |
+| **Error Response**| **Code**: 404 Not Found                      |
+|                   | **Content**: `{ "error": "Event not found" }`|
+|                   | **Code**: 500 Internal Server Error          |
+|                   | **Content**: `{ "error": "Error message here" }` |
+| **Description**   | Deletes a specific event by its ID, removing it from the database entirely. |
+
+### Edit Event
+
+| Aspect            | Details                                       |
+|-------------------|-----------------------------------------------|
+| **Route**         | `/event/edit/:eventId`                              |
+| **HTTP Method**   | PATCH                                         |
+| **Headers**       | `Authorization`: Bearer Token, `Content-Type`: application/json |
+| **Query Parameters** | `eventId` (UUID): ID of the event to edit  |
+| **Request Body**  | `{ "Title": "String", "Description": "String", "Location": "String", "Date": "Date", "Duration": "Integer" }` |
+| **Success Response** | **Code**: 200 OK                         |
+|                   | **Content**: `{ "message": "Event updated successfully" }` |
+| **Error Response**| **Code**: 404 Not Found                      |
+|                   | **Content**: `{ "error": "Event not found" }`|
+|                   | **Code**: 500 Internal Server Error          |
+|                   | **Content**: `{ "error": "Error message here" }` |
+| **Description**   | Updates an existing event with new details as provided, allowing modifications to title, description, location, date, and duration. |
+
+## Question Endpoints
+
+### Edit Question
+
+| Aspect            | Details                                       |
+|-------------------|-----------------------------------------------|
+| **Route**         | `/question/edit-question/:questionId`                  |
+| **HTTP Method**   | PATCH                                         |
+| **Headers**       | `Authorization`: Bearer Token, `Content-Type`: application/json |
+| **Query Parameters** | `questionId` (UUID): ID of the question to edit |
+| **Request Body**  | `{ "question": "New Question?", "description": "New description", "date": "2021-01-01T00:00:00.000Z", "duration": 60 }` |
+| **Success Response** | **Code**: 200 OK                         |
+|                   | **Content**: `{ "message": "Question updated successfully", "question": {...} }` |
+| **Error Response**| **Code**: 404 Not Found                      |
+|                   | **Content**: `{ "error": "Question not found" }`|
+|                   | **Code**: 500 Internal Server Error          |
+|                   | **Content**: `{ "error": "Error message here" }` |
+| **Description**   | Updates an existing question with new details as provided. |
+
+### Delete Question
+
+| Aspect            | Details                                       |
+|-------------------|-----------------------------------------------|
+| **Route**         | `/question/delete-question/:questionId`                |
+| **HTTP Method**   | DELETE                                        |
+| **Headers**       | `Authorization`: Bearer Token, `Content-Type`: application/json |
+| **Query Parameters** | `questionId` (UUID): ID of the question to delete |
+| **Request Body**  | None                                          |
+| **Success Response** | **Code**: 200 OK                         |
+|                   | **Content**: `{ "message": "Question and all related answers deleted successfully" }` |
+| **Error Response**| **Code**: 404 Not Found                      |
+|                   | **Content**: `{ "error": "Question not found" }`|
+|                   | **Code**: 500 Internal Server Error          |
+|                   | **Content**: `{ "error": "Error message here" }` |
+| **Description**   | Deletes a question and automatically removes all related answers to maintain data integrity. |
+
+## Answer Endpoints
+
+### Edit Answer
+
+| Aspect            | Details                                       |
+|-------------------|-----------------------------------------------|
+| **Route**         | `/answer/edit-answer/:answerId`                      |
+| **HTTP Method**   | PATCH                                         |
+| **Headers**       | `Authorization`: Bearer Token, `Content-Type`: application/json |
+| **Query Parameters** | `answerId` (UUID): ID of the answer to edit |
+| **Request Body**  | `{ "optionId": "UUID" }`                      |
+| **Success Response** | **Code**: 200 OK                         |
+|                   | **Content**: `{ "message": "Answer updated successfully", "answer": {...} }` |
+| **Error Response**| **Code**: 404 Not Found                      |
+|                   | **Content**: `{ "error": "Answer not found" }`|
+|                   | **Code**: 500 Internal Server Error          |
+|                   | **Content**: `{ "error": "Error message here" }` |
+| **Description**   | Allows updating the option selected in an answer, enabling modifications post-submission or corrections to an existing response. |
