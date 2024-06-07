@@ -4,6 +4,61 @@
 
 ### Needed Endpoints
 
+#### Account
+
+- register
+- login
+- logout (invalidate jwt)
+- get info
+- delete account
+- change password
+- change email
+- change name
+
+#### Group
+
+- create group
+- edit group info
+- add member
+- remove member
+- get info
+- delete group
+- get events
+- get polls
+
+#### Event
+
+- create event
+- get info
+- delete event
+- edit event info
+
+#### Poll
+
+- create poll (includes question creation)
+- get info
+- delete poll
+- edit poll info
+
+#### Question
+
+- get questions
+- edit question
+
+#### Answer
+
+- get answers
+- edit answer
+- create answer
+
+#### Type
+
+- get types
+- 
+#### Sentiment
+
+- get sentiment
+
 ### Done Endpoints
 
 ## Examples
@@ -263,4 +318,4 @@
 |                   | **Content**: `{ "error": "Member not found" }`|
 |                   | **Code**: 500 Internal Server Error          |
 |                   | **Content**: `{ "error": "Error message here" }` |
-| **Description**   | Removes a member from a group by deleting the group member relationship. This operation requires verification that the user has the necessary rights to modify group membership. |
+| **Description**   | Removes a member from a group by deleting the group member relationship. |
