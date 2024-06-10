@@ -32,20 +32,20 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'GroupMembers'
   });
 
-  GroupMember.associate = function (models) {
-    this.belongsTo(models.Group, {
-      foreignKey: 'GroupID',
-      as: 'groups'
-    });
-    this.belongsTo(models.Account, {
-      foreignKey: 'AccountID',
-      as: 'account'
-    });
-    this.hasMany(models.Answer, {
-      foreignKey: 'GroupMemberID',
-      as: 'answers'
-    });
-  };
+//  GroupMember.associate = function (models) {
+//    this.belongsTo(models.Group, {
+//      foreignKey: 'GroupID',
+//      as: 'groups'
+//    });
+//    this.belongsTo(models.Account, {
+//      foreignKey: 'AccountID',
+//      as: 'account'
+//    });
+//    this.hasMany(models.Answer, {
+//      foreignKey: 'GroupMemberID',
+//      as: 'answers'
+//    });
+//  };
 
   return GroupMember;
 };

@@ -50,11 +50,11 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Account.associate = function (models) {
-    this.belongsToMany(models.Groups, {
+    this.belongsToMany(models.Group, {
       through: models.GroupMember,
       foreignKey: 'AccountID',
       otherKey: 'GroupID',
-      as: 'groups'
+      as: 'groups',
     });
   };
 

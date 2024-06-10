@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'GroupID',
       as: 'polls'
     });
-    this.belongsToMany(models.Accounts, {
+    this.belongsToMany(models.Account, {
       through: models.GroupMember,
       foreignKey: 'GroupID',
       otherKey: 'AccountID',
