@@ -23,14 +23,28 @@ const GroupMember = defineGroupMemberModel(sequelize, DataTypes);
 
 // Create Group endpoint
 router.post('/create', verifyToken, async (req, res) => {
+    const accountId = req.account.accountId;
     const { name, description } = req.body;
+
+    const transaction = await sequelize.transaction();
+
     try {
         const newGroup = await Group.create({
             Name: name,
-            Description: description
-        });
-        res.status(201).json({ message: 'Group created successfully', group: newGroup });
+            Description: description,
+            BandID: 1
+        }, { transaction });
+
+        await GroupMember.create({
+            GroupID: newGroup.GroupID,
+            AccountID: accountId
+        }, { transaction });
+
+        await transaction.commit();
+
+        res.status(201).json({ message: 'Group created successfully, member added', group: newGroup });
     } catch (error) {
+        await transaction.rollback();
         res.status(500).json({ error: error.message });
     }
 });
@@ -98,12 +112,12 @@ router.patch('/edit/:groupId', verifyToken, async (req, res) => {
 
 // Add Member to Group
 router.post('/add-member', verifyToken, async (req, res) => {
-    const { groupId, accountId } = req.body;
+    const { groupId, manipulateAccountId } = req.body;
     const transaction = await sequelize.transaction();
     try {
         const member = await GroupMember.create({
             GroupID: groupId,
-            AccountID: accountId
+            AccountID: manipulateAccountId
         }, { transaction });
 
         // Retrieve all open polls to set default answers
@@ -129,13 +143,13 @@ router.post('/add-member', verifyToken, async (req, res) => {
 
 // Remove Member from Group
 router.delete('/remove-member', verifyToken, async (req, res) => {
-    const { groupId, accountId } = req.body;
+    const { groupId, manipulateAccountId } = req.body;
     const transaction = await sequelize.transaction();
     try {
         const member = await GroupMember.findOne({
             where: {
                 GroupID: groupId,
-                AccountID: accountId
+                AccountID: manipulateAccountId
             },
             transaction
         });

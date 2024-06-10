@@ -9,7 +9,7 @@ const verifyToken = (req, res, next) => {
     }
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
-        req.account = decoded;
+        req.account = { accountId: decoded.accountId };
         next();
     } catch (error) {
         return res.status(401).send('Invalid Token');

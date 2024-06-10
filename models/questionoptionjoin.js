@@ -1,7 +1,7 @@
-const { Model, DataTypes } = require('sequelize');
+const { Model } = require('sequelize');
 
-module.exports = (sequelize) => {
-  class QuestionOptionJoin extends Model {}
+module.exports = (sequelize, DataTypes) => {
+  class QuestionOptionJoin extends Model { }
 
   QuestionOptionJoin.init({
     QuestionOptionID: {

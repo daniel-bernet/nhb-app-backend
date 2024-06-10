@@ -1,11 +1,9 @@
 'use strict';
 
-const { v4: uuidv4 } = require('uuid');
-
 module.exports = {
     async up(queryInterface, Sequelize) {
         await queryInterface.bulkInsert('Bands', [{
-            BandID: uuidv4(),
+            BandID: 1,
             Description: 'NoHeadBand',
             createdAt: new Date(),
             updatedAt: new Date()

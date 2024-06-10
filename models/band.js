@@ -1,14 +1,14 @@
 const { Model, DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
-  class Band extends Model {}
+  class Band extends Model { }
 
   Band.init({
     BandID: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
+      type: DataTypes.INTEGER,
       primaryKey: true,
-      allowNull: false
+      allowNull: false,
+      autoIncrement: true
     },
     Description: {
       type: DataTypes.STRING(512),
@@ -23,7 +23,8 @@ module.exports = (sequelize) => {
   Band.associate = function (models) {
     this.hasMany(models.Group, {
       foreignKey: 'BandID',
-      as: 'groups'
+      as: 'groups',
+      onDelete: 'cascade'
     });
   };
 

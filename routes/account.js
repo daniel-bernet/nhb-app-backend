@@ -5,6 +5,9 @@ const jwt = require('jsonwebtoken');
 const { Sequelize, DataTypes } = require('sequelize');
 const config = require('../config/config.js');
 const defineAccountModel = require('../models/account.js');
+const defineGroupModel = require('../models/group.js');
+const defineGroupMemberModel = require('../models/groupMember.js');
+const defineBandModel = require('../models/band.js');
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -21,6 +24,9 @@ const sequelize = new Sequelize(
 );
 
 const Account = defineAccountModel(sequelize, DataTypes);
+const Group = defineGroupModel(sequelize, DataTypes);
+const GroupMember = defineGroupMemberModel(sequelize, DataTypes);
+const Band = defineBandModel(sequelize, DataTypes);
 
 // Create account endpoint
 router.post('/create-account', async (req, res) => {
@@ -55,7 +61,7 @@ router.post('/login', async (req, res) => {
         const token = jwt.sign(
             { accountId: account.AccountID },
             JWT_SECRET,
-            { expiresIn: '1h' }
+            { expiresIn: '8h' }
         );
 
         res.status(200).json({ message: 'Login successful', token });
@@ -66,7 +72,8 @@ router.post('/login', async (req, res) => {
 
 // Change password endpoint
 router.post('/change-password', verifyToken, async (req, res) => {
-    const { accountId, oldPassword, newPassword } = req.body;
+    const { oldPassword, newPassword } = req.body;
+    const accountId = req.account.accountId;
     try {
         const account = await Account.findByPk(accountId);
         if (!account) {
@@ -88,7 +95,7 @@ router.post('/change-password', verifyToken, async (req, res) => {
 
 // Delete account
 router.delete('/delete-account', verifyToken, async (req, res) => {
-    const { accountId } = req.account;
+    const accountId = req.account.accountId;
     try {
         const account = await Account.findByPk(accountId);
         if (!account) {
@@ -103,7 +110,7 @@ router.delete('/delete-account', verifyToken, async (req, res) => {
 
 // Get account information
 router.get('/account-info', verifyToken, async (req, res) => {
-    const { accountId } = req.account;
+    const accountId = req.account.accountId;
     try {
         const account = await Account.findByPk(accountId, {
             attributes: ['FirstName', 'LastName', 'Email']
@@ -119,7 +126,8 @@ router.get('/account-info', verifyToken, async (req, res) => {
 
 // Change email endpoint
 router.post('/change-email', verifyToken, async (req, res) => {
-    const { accountId, newEmail } = req.body;
+    const { newEmail } = req.body;
+    const accountId = req.account.accountId;
     try {
         const account = await Account.findByPk(accountId);
         if (!account) {
@@ -145,7 +153,8 @@ router.post('/change-email', verifyToken, async (req, res) => {
 
 // Change first name
 router.patch('/change-first-name', verifyToken, async (req, res) => {
-    const { accountId, firstName } = req.body;
+    const { firstName } = req.body;
+    const accountId = req.account.accountId;
     try {
         const account = await Account.findByPk(accountId);
         if (!account) {
@@ -161,7 +170,8 @@ router.patch('/change-first-name', verifyToken, async (req, res) => {
 
 // Change last name
 router.patch('/change-last-name', verifyToken, async (req, res) => {
-    const { accountId, lastName } = req.body;
+    const { lastName } = req.body;
+    const accountId = req.account.accountId;
     try {
         const account = await Account.findByPk(accountId);
         if (!account) {
@@ -174,5 +184,41 @@ router.patch('/change-last-name', verifyToken, async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+// Endpoint to get basic group information for an account
+router.get('/get-basic-group-information', verifyToken, async (req, res) => {
+    const accountId = req.account.accountId;
+    try {
+        const account = await Account.findByPk(accountId, {
+            include: [{
+                model: Group,
+                as: 'groups',
+                include: [
+                    {
+                        model: Band,
+                        as: 'band',
+                        attributes: ['Description']
+                    },
+                    {
+                        model: Account,
+                        as: 'members',
+                        attributes: ['AccountID']
+                    }
+                ],
+                attributes: ['GroupID', 'Name', 'Description']
+            }]
+        });
+
+        if (!account) {
+            return res.status(404).json({ error: 'Account not found' });
+        }
+
+        res.status(200).json({ groups: account.groups });
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ error: 'Internal Server Error', details: error.message });
+    }
+});
+
 
 module.exports = router;

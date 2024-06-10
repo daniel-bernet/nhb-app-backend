@@ -11,12 +11,11 @@ module.exports = {
       },
       BandID: {
         allowNull: false,
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
         references: {
           model: 'Bands',
           key: 'BandID'
         },
-        onDelete: 'CASCADE'
       },
       Name: {
         allowNull: false,

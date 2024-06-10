@@ -21,7 +21,7 @@
 
 | Key | Column Name   | Datatype        | Required | Nullable | Default | Description                       |
 |-----|---------------|-----------------|----------|----------|---------|-----------------------------------|
-| PK  | BandID        | UUID            | Yes      | No       | None    | Unique identifier for each band|
+| PK  | BandID        | Integer            | Yes      | No       | None    | Unique identifier for each band|
 |     | Description     | Varchar(512)     | Yes      | No       | None    | Description for a band               |
 
 ## Group Table
@@ -29,7 +29,7 @@
 | Key | Column Name   | Datatype        | Required | Nullable | Default | Description                       |
 |-----|---------------|-----------------|----------|----------|---------|-----------------------------------|
 | PK  | GroupID        | UUID            | Yes      | No       | None    | Unique identifier for each group|
-| FK  | BandID     | UUID     | Yes      | No       | None    | Band the group is associated with                 |
+| FK  | BandID     | Integer     | Yes      | No       | None    | Band the group is associated with                 |
 |     | Name      | Varchar(64)     | Yes      | No       | None    | Name of the group                  |
 |     | Description     | Varchar(512)     | Yes      | No       | None    | Description for the group               |
 
@@ -94,7 +94,7 @@
 
 | Key | Column Name   | Datatype        | Required | Nullable | Default | Description                       |
 |-----|---------------|-----------------|----------|----------|---------|-----------------------------------|
-| PK  | SentimentID        | UUID            | Yes      | No       | None    | Unique identifier for sentiment|
+| PK  | SentimentID        | Integer            | Yes      | No       | None    | Unique identifier for sentiment|
 |     | Sentiment     | Varchar(1)     | Yes      | No       | None    | Character representation of sentiment|
 
 ## Option Table
@@ -102,7 +102,7 @@
 | Key | Column Name   | Datatype        | Required | Nullable | Default | Description                       |
 |-----|---------------|-----------------|----------|----------|---------|-----------------------------------|
 | PK  | OptionID        | UUID            | Yes      | No       | None    | Unique identifier for option|
-| FK  | SentimentID     | UUID     | Yes      | No       | None    | Sentiment represented by this option|
+| FK  | SentimentID     | Integer     | Yes      | No       | None    | Sentiment represented by this option|
 |     | Option      | Varchar(64)     | Yes      | No       | None    | Formulated answer-option|
 |     | Description     | Varchar(512)     | No      | Yes       | Null    | Description for the option|
 

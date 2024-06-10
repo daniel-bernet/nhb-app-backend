@@ -1,6 +1,6 @@
-const { Model, DataTypes } = require('sequelize');
+const { Model } = require('sequelize');
 
-module.exports = (sequelize) => {
+module.exports = (sequelize, DataTypes) => {
   class Group extends Model { }
 
   Group.init({
@@ -11,13 +11,12 @@ module.exports = (sequelize) => {
       allowNull: false
     },
     BandID: {
-      type: DataTypes.UUID,
+      type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: 'Bands',
         key: 'BandID'
       },
-      onDelete: 'CASCADE'
     },
     Name: {
       type: DataTypes.STRING(64),
@@ -46,7 +45,7 @@ module.exports = (sequelize) => {
       foreignKey: 'GroupID',
       as: 'polls'
     });
-    this.belongsToMany(models.Account, {
+    this.belongsToMany(models.Accounts, {
       through: models.GroupMember,
       foreignKey: 'GroupID',
       otherKey: 'AccountID',

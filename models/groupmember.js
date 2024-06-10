@@ -1,6 +1,6 @@
-const { Model, DataTypes } = require('sequelize');
+const { Model } = require('sequelize');
 
-module.exports = (sequelize) => {
+module.exports = (sequelize, DataTypes) => {
   class GroupMember extends Model { }
 
   GroupMember.init({
@@ -35,7 +35,7 @@ module.exports = (sequelize) => {
   GroupMember.associate = function (models) {
     this.belongsTo(models.Group, {
       foreignKey: 'GroupID',
-      as: 'group'
+      as: 'groups'
     });
     this.belongsTo(models.Account, {
       foreignKey: 'AccountID',

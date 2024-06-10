@@ -4,94 +4,8 @@
 
 ### Needed Endpoints
 
-#### Account - Needed
-
-All done.
-
-#### Group - Needed
-
-All done.
-
-#### Event - Needed
-
-All done.
-
-#### Poll - Needed
-
-All done.
-
-#### Question - Needed
-
-All done.
-
-#### Answer - Needed
-
-All done.
-
-#### Type - Needed
-
-All done.
-
-#### Sentiment - Needed
-
-All done.
-
-### Done Endpoints
-
-#### Account - Done
-
-- register
-- login
-- get info
-- delete account
-- change password
-- change email
-- change firstname
-- change lastname
-
-#### Group - Done
-
-- create group
-- edit group info
-- add member
-- remove member
-- get info
-- delete group
-- get events
-- get polls
-
-#### Event - Done
-
-- create event
-- get info
-- delete event
-- edit event info
-
-#### Poll - Done
-
-- create poll (includes question creation as well as answer creation)
-- get info
-- delete poll
-- edit poll info
-- close poll
-- open poll
-
-#### Question - Done
-
-- edit question
-- delete question
-
-#### Answer - Done
-
-- edit answer
-
-#### Type - Done
-
-- get types
-
-#### Sentiment - Done
-
-- get sentiment
+- validate JWT (then generate a new jwt)
+- get group info should contain all events, polls, messages etc.
 
 ## Examples
 
@@ -252,22 +166,68 @@ All done.
 |                   | **Content**: `{ "error": "Error message here" }` |
 | **Description**   | Allows the user to update their last name. This endpoint requires authentication and uses a PATCH method for partial data modification. |
 
+### Delete Account
+
+| Aspect               | Details                                                                     |
+|----------------------|-----------------------------------------------------------------------------|
+| **Route**            | `/account/delete-account`                                                           |
+| **HTTP Method**      | DELETE                                                                      |
+| **Headers**          | `Authorization`: Bearer Token, `Content-Type`: application/json             |
+| **Query Parameters** | None                                                                        |
+| **Request Body**     | None                                                                        |
+| **Success Response** | **Code**: 200 OK                                                            |
+|                      | **Content**: `{ "message": "Account successfully deleted" }`                |
+| **Error Response**   | **Code**: 404 Not Found                                                     |
+|                      | **Content**: `{ "error": "Account not found" }`                             |
+|                      | **Code**: 500 Internal Server Error                                         |
+|                      | **Content**: `{ "error": "Error message here" }`                            |
+| **Description**      | This endpoint deletes an existing account. It requires authentication and   |
+|                      | is only accessible to the account holder or authorized users. On successful |
+|                      | deletion, it returns a success message. If the account is not found or there|
+|                      | is a server error, appropriate error messages are returned.                 |
+
+### Get Basic Group Information
+
+| Aspect               | Details                                                                   |
+|----------------------|---------------------------------------------------------------------------|
+| **Route**            | `/account/get-basic-group-information`                                            |
+| **HTTP Method**      | GET                                                                       |
+| **Headers**          | `Authorization`: Bearer Token, `Content-Type`: application/json           |
+| **Query Parameters** | None                                                                      |
+| **Request Body**     | None                                                                      |
+| **Success Response** | **Code**: 200 OK                                                          |
+|                      | **Content**: `{ "groups": [{"GroupID": "", "Name": "", "Description": "", "band": {"Name": ""}, "groupMembers": [{"account": {"FirstName": "", "LastName": ""}}]}]}` |
+| **Error Response**   | **Code**: 404 Not Found                                                   |
+|                      | **Content**: `{ "error": "Account not found" }`                           |
+|                      | **Code**: 500 Internal Server Error                                       |
+|                      | **Content**: `{ "error": "Error message here" }`                          |
+| **Description**      | This endpoint retrieves basic information about all groups an account is  |
+|                      | part of. It includes the band name, list of group members, and other group|
+|                      | information such as group name, description, and ID. This endpoint requires|
+|                      | authentication and is accessible only to the account holder.               |
+
 ## Group Endpoints
 
 ### Create Group
 
-| Aspect            | Details                                       |
-|-------------------|-----------------------------------------------|
-| **Route**         | `/group/create`                               |
-| **HTTP Method**   | POST                                          |
-| **Headers**       | `Authorization`: Bearer Token, `Content-Type`: application/json              |
-| **Query Parameters** | None                                      |
-| **Request Body**  | `{ "name": "GroupName", "description": "GroupDescription" }` |
-| **Success Response** | **Code**: 201 Created                    |
-|                   | **Content**: `{ "message": "Group created successfully", "group": { "name": "GroupName", "description": "GroupDescription" } }` |
-| **Error Response**| **Code**: 500 Internal Server Error          |
-|                   | **Content**: `{ "error": "Error message here" }` |
-| **Description**   | This endpoint allows for the creation of a new group with a name and description. |
+| Aspect               | Details                                                                   |
+|----------------------|---------------------------------------------------------------------------|
+| **Route**            | `/group/create`                                                                 |
+| **HTTP Method**      | POST                                                                      |
+| **Headers**          | `Authorization`: Bearer Token, `Content-Type`: application/json           |
+| **Query Parameters** | None                                                                      |
+| **Request Body**     | `{ "name": "Group Name", "description": "Group Description" }`            |
+| **Success Response** | **Code**: 201                                                             |
+|                      | **Content**: `{ "message": "Group created successfully, member added", "group": { "GroupID": "", "Name": "", "Description": "" } }` |
+| **Error Response**   | **Code**: 404 Not Found                                                   |
+|                      | **Content**: `{ "error": "Account not found" }`                           |
+|                      | **Code**: 500 Internal Server Error                                       |
+|                      | **Content**: `{ "error": "Error message here" }`                          |
+| **Description**      | This endpoint is used for creating a new group and automatically adding the|
+|                      | creator as the first member of the group. The group will be associated with|
+|                      | a fixed BandID, reflecting the current limitation of supporting only one band.|
+|                      | The transaction ensures that both the creation of the group and the addition|
+|                      | of the member are successful, otherwise, no changes are committed to the database. |
 
 ### Delete Group
 
@@ -328,7 +288,7 @@ All done.
 | **HTTP Method**   | POST                                          |
 | **Headers**       | `Authorization`: Bearer Token, `Content-Type`: application/json |
 | **Query Parameters** | None                                      |
-| **Request Body**  | `{ "groupId": "UUID", "accountId": "UUID" }` |
+| **Request Body**  | `{ "groupId": "UUID", "manipulateAccountId": "UUID" }` |
 | **Success Response** | **Code**: 201 Created                    |
 |                   | **Content**: `{ "message": "Member added successfully and default answers set for open polls", "member": { ... } }` |
 | **Error Response**| **Code**: 500 Internal Server Error          |
@@ -343,7 +303,7 @@ All done.
 | **HTTP Method**   | DELETE                                        |
 | **Headers**       | `Authorization`: Bearer Token, `Content-Type`: application/json |
 | **Query Parameters** | None                                      |
-| **Request Body**  | `{ "groupId": "UUID", "accountId": "UUID" }` |
+| **Request Body**  | `{ "groupId": "UUID", "manipulateAccountId": "UUID" }` |
 | **Success Response** | **Code**: 200 OK                         |
 |                   | **Content**: `{ "message": "Member removed successfully" }` or `{ "message": "Member removed and group deleted due to no remaining members" }` |
 | **Error Response**| **Code**: 404 Not Found                      |

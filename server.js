@@ -17,7 +17,7 @@ const sequelize = new Sequelize(
     dialect: config.development.dialect,
     port: config.development.port,
     logging: false
-  }
+  },
 );
 
 (async () => {
@@ -33,32 +33,32 @@ const sequelize = new Sequelize(
     app.use('/account', accountRoutes);
 
     // Group endpoints
-    const groupRoutes = require('./routes/group');
-    app.use('/group', groupRoutes);
+     const groupRoutes = require('./routes/group');
+     app.use('/group', groupRoutes);
 
     // Type endpoints
-    const typeRoutes = require('./routes/type');
-    app.use('/type', typeRoutes);
+    // const typeRoutes = require('./routes/type');
+    // app.use('/type', typeRoutes);
 
     // Sentiment endpoints
-    const sentimentRoutes = require('./routes/sentiment');
-    app.use('/sentiment', sentimentRoutes);
+    // const sentimentRoutes = require('./routes/sentiment');
+    // app.use('/sentiment', sentimentRoutes);
 
     // Poll endpoints
-    const pollRoutes = require('./routes/poll');
-    app.use('/poll', pollRoutes);
+    // const pollRoutes = require('./routes/poll');
+    // app.use('/poll', pollRoutes);
 
     // Event endpoints
-    const eventRoutes = require('./routes/event');
-    app.use('/event', eventRoutes);
+    // const eventRoutes = require('./routes/event');
+    // app.use('/event', eventRoutes);
 
     // Question endpoints
-    const questionRoutes = require('./routes/question');
-    app.use('/question', questionRoutes);
+    // const questionRoutes = require('./routes/question');
+    // app.use('/question', questionRoutes);
 
     // Answer endpoints
-    const answerRoutes = require('./routes/answer');
-    app.use('/answer', answerRoutes);
+    // const answerRoutes = require('./routes/answer');
+    // app.use('/answer', answerRoutes);
 
     app.get('/', (req, res) => { //test route, remove for production!!!!!
       res.status(200).send('Hello World!');

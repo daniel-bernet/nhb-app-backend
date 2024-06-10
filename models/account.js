@@ -1,7 +1,7 @@
-const { Model, DataTypes } = require('sequelize');
-const bcrypt = require('bcrypt');
+const { Model } = require('sequelize');
 
-module.exports = (sequelize) => {
+
+module.exports = (sequelize, DataTypes) => {
   class Account extends Model { }
 
   Account.init({
@@ -50,15 +50,11 @@ module.exports = (sequelize) => {
   });
 
   Account.associate = function (models) {
-    this.belongsToMany(models.Group, {
+    this.belongsToMany(models.Groups, {
       through: models.GroupMember,
       foreignKey: 'AccountID',
       otherKey: 'GroupID',
       as: 'groups'
-    });
-    this.hasMany(models.GroupMember, {
-      foreignKey: 'AccountID',
-      as: 'groupMembers'
     });
   };
 
