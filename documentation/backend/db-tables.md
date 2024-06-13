@@ -59,7 +59,7 @@
 |     | Description     | Varchar(512)     | Yes      | No       | None    | Description for the event|
 |     | Location      | Varchar(64)     | Yes      | No       | None    | Location of the event|
 |     | Date      | Timestamp     | Yes      | No       | None    | Date and time of the event|
-|     | Duration      | Integer     | Yes      | No       | None    | Duration of the event|
+|     | Duration      | Integer     | Yes      | No       | None    | Duration of the event in minutes|
 
 ## Poll Table
 

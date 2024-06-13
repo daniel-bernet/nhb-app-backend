@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
   GroupMember.associate = function (models) {
     this.belongsTo(models.Group, {
       foreignKey: "GroupID",
-      as: "parentGroups",
+      as: "groups",
     });
     this.belongsTo(models.Account, {
       foreignKey: "AccountID",

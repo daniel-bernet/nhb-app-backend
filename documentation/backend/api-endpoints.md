@@ -7,6 +7,10 @@
 - validate JWT (then generate a new jwt)
 - get group info should contain all events, polls, messages etc.
 
+### No longer needed Endpoints
+
+- Group: get polls, get events
+
 ## Examples
 
 ### Template for New Endpoints
@@ -345,6 +349,25 @@
 |                   | **Code**: 500 Internal Server Error          |
 |                   | **Content**: `{ "error": "Error message here" }` |
 | **Description**   | Retrieves all polls associated with a specific group. Requires authentication. |
+
+### Get Group Feed
+
+| Aspect               | Details                                                                                              |
+|----------------------|------------------------------------------------------------------------------------------------------|
+| **Route**            | `/group/get-feed/:groupId`                                                                           |
+| **HTTP Method**      | GET                                                                                                  |
+| **Headers**          | `Authorization`: Bearer Token, `Content-Type`: application/json                                      |
+| **Query Parameters** | `start` (integer): Index from which the feed items should start. Default is 0.                       |
+| **Request Body**     | None                                                                                                 |
+| **Success Response** | **Code**: 200 OK                                                                                     |
+|                      | **Content**: `{ "data": [{"id": "UUID", "title": "string", "description": "string", "updatedAt": "timestamp", "createdAt": "timestamp", "feedType": "event/poll", "typeLabel": "string", "additionalDetails": {...}}], "message": "Feed fetched successfully" }` |
+| **Error Response**   | **Code**: 404 Not Found                                                                              |
+|                      | **Content**: `{ "error": "Group not found" }`                                                        |
+|                      | **Code**: 403 Forbidden                                                                              |
+|                      | **Content**: `{ "error": "User is not a member of the group" }`                                      |
+|                      | **Code**: 500 Internal Server Error                                                                  |
+|                      | **Content**: `{ "error": "Internal Server Error", "details": "error description" }`                  |
+| **Description**      | This endpoint retrieves the most recent activities of a group, including events and polls, sorted from most recent to oldest. Each item in the feed is tagged with a `feedType` to identify whether it is an event or a poll and includes additional details specific to each type. Pagination is supported through the `start` query parameter, and only the first 20 entries are returned at a time. The user must be a member of the specified group to access the feed.|
 
 ## Sentiment Endpoints
 

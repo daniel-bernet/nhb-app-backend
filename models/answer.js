@@ -53,9 +53,7 @@ module.exports = (sequelize) => {
     this.belongsTo(models.Account, {
       foreignKey: 'AccountID',
       as: 'account',
-      through: { //not sure if this is correct, in case of error investigate here!
-        model: models.GroupMember,
-      },
+      through: models.GroupMember,
       constraints: false
     });
   };

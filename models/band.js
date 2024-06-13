@@ -23,7 +23,7 @@ module.exports = (sequelize) => {
   Band.associate = function (models) {
     this.hasMany(models.Group, {
       foreignKey: 'BandID',
-      as: 'subGroups',
+      as: 'groups',
       onDelete: 'cascade'
     });
   };

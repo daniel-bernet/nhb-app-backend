@@ -27,14 +27,6 @@ const sequelize = new Sequelize(
     await sequelize.authenticate();
     console.log("Connection has been established successfully.");
 
-//    // Import models and associate them
-//    const models = require("./models");
-//    Object.keys(models).forEach((modelName) => {
-//      if (models[modelName].associate) {
-//        models[modelName].associate(models);
-//      }
-//    });
-
     // Sync models with the database
     await sequelize.sync({ alter: true });
     console.log("Database & tables created! API ready for interaction!");
