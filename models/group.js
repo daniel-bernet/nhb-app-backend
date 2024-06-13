@@ -37,14 +37,14 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'BandID',
       as: 'band'
     });
-    this.hasMany(models.Event, {
-      foreignKey: 'GroupID',
-      as: 'events'
-    });
-    this.hasMany(models.Poll, {
-      foreignKey: 'GroupID',
-      as: 'polls'
-    });
+//    this.hasMany(models.Event, {
+//      foreignKey: 'GroupID',
+//      as: 'events'
+//    });
+//    this.hasMany(models.Poll, {
+//      foreignKey: 'GroupID',
+//      as: 'polls'
+//    });
     this.belongsToMany(models.Account, {
       through: models.GroupMember,
       foreignKey: 'GroupID',

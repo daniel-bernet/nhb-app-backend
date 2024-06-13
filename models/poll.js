@@ -50,7 +50,7 @@ module.exports = (sequelize) => {
     });
     this.belongsTo(models.Group, {
       foreignKey: 'GroupID',
-      as: 'group'
+      as: 'polledGroup'
     });
     this.belongsTo(models.Type, {
       foreignKey: 'TypeID',

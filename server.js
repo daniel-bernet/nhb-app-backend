@@ -1,13 +1,14 @@
-'use strict';
+"use strict";
 
-const express = require('express');
-const cors = require('cors');
-const { Sequelize } = require('sequelize');
-const config = require('./config/config');
+const express = require("express");
+const cors = require("cors");
+const { Sequelize } = require("sequelize");
+const config = require("./config/config");
 
 const app = express();
 const PORT = config.development.backendport;
 
+// Initialize Sequelize with connection settings
 const sequelize = new Sequelize(
   config.development.database,
   config.development.username,
@@ -16,58 +17,46 @@ const sequelize = new Sequelize(
     host: config.development.host,
     dialect: config.development.dialect,
     port: config.development.port,
-    logging: false
-  },
+    logging: false,
+  }
 );
 
 (async () => {
   try {
+    // Authenticate and log the successful connection
     await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
+    console.log("Connection has been established successfully.");
 
+//    // Import models and associate them
+//    const models = require("./models");
+//    Object.keys(models).forEach((modelName) => {
+//      if (models[modelName].associate) {
+//        models[modelName].associate(models);
+//      }
+//    });
+
+    // Sync models with the database
+    await sequelize.sync({ alter: true });
+    console.log("Database & tables created! API ready for interaction!");
+
+    // Middlewares
     app.use(cors());
     app.use(express.json());
 
-    // Account endpoints
-    const accountRoutes = require('./routes/account');
-    app.use('/account', accountRoutes);
+    // Dynamically load routes
+    const routes = require("./routes"); // Ensure you have an index.js in routes folder to manage this
+    app.use(routes);
 
-    // Group endpoints
-     const groupRoutes = require('./routes/group');
-     app.use('/group', groupRoutes);
-
-    // Type endpoints
-    // const typeRoutes = require('./routes/type');
-    // app.use('/type', typeRoutes);
-
-    // Sentiment endpoints
-    // const sentimentRoutes = require('./routes/sentiment');
-    // app.use('/sentiment', sentimentRoutes);
-
-    // Poll endpoints
-    // const pollRoutes = require('./routes/poll');
-    // app.use('/poll', pollRoutes);
-
-    // Event endpoints
-    // const eventRoutes = require('./routes/event');
-    // app.use('/event', eventRoutes);
-
-    // Question endpoints
-    // const questionRoutes = require('./routes/question');
-    // app.use('/question', questionRoutes);
-
-    // Answer endpoints
-    // const answerRoutes = require('./routes/answer');
-    // app.use('/answer', answerRoutes);
-
-    app.get('/', (req, res) => { //test route, remove for production!!!!!
-      res.status(200).send('Hello World!');
+    // Default route
+    app.get("/", (req, res) => {
+      res.status(200).send("Hello World!");
     });
 
-    app.listen(PORT, '0.0.0.0', () => {
+    // Start the server
+    app.listen(PORT, "0.0.0.0", () => {
       console.log(`Server running on port ${PORT}`);
     });
   } catch (error) {
-    console.error('Unable to connect to the database:', error);
+    console.error("Unable to connect to the database:", error);
   }
 })();

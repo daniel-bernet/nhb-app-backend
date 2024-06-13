@@ -4,10 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { Sequelize, DataTypes } = require('sequelize');
 const config = require('../config/config.js');
-const defineAccountModel = require('../models/account.js');
-const defineGroupModel = require('../models/group.js');
-const defineGroupMemberModel = require('../models/groupMember.js');
-const defineBandModel = require('../models/band.js');
+const { Account, Group, Band } = require('../models');
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -22,11 +19,6 @@ const sequelize = new Sequelize(
         port: config.development.port,
     }
 );
-
-const Account = defineAccountModel(sequelize, DataTypes);
-const Group = defineGroupModel(sequelize, DataTypes);
-const GroupMember = defineGroupMemberModel(sequelize, DataTypes);
-const Band = defineBandModel(sequelize, DataTypes);
 
 // Create account endpoint
 router.post('/create-account', async (req, res) => {
