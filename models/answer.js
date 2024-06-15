@@ -42,7 +42,8 @@ module.exports = (sequelize) => {
       as: 'option'
     });
     this.belongsTo(models.Group, {
-      foreignKey: 'GroupID',
+      foreignKey: 'GroupMemberID',
+      otherKey: 'GroupID',
       as: 'group',
       through: { //not sure if this is correct, in case of error investigate here!
         model: models.GroupMember,
@@ -51,7 +52,8 @@ module.exports = (sequelize) => {
       constraints: false
     });
     this.belongsTo(models.Account, {
-      foreignKey: 'AccountID',
+      foreignKey: 'GroupMemberID',
+      otherKey: 'AccountID',
       as: 'account',
       through: models.GroupMember,
       constraints: false

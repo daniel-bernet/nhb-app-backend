@@ -39,13 +39,17 @@ module.exports = (sequelize) => {
       otherKey: 'PollID',
       as: 'polls'
     });
-    Question.associate = function (models) {
-      this.hasMany(models.Answer, {
-        foreignKey: 'QuestionID',
-        onDelete: 'CASCADE',
-        as: 'answers'
-      });
-    };
+    this.hasMany(models.Answer, {
+      foreignKey: 'QuestionID',
+      onDelete: 'CASCADE',
+      as: 'answers'
+    });
+    this.belongsToMany(models.Option, {
+      through: models.QuestionOptionJoin,
+      foreignKey: 'QuestionID',
+      otherKey: 'OptionID',
+      as: 'options'
+    });
   };
 
   return Question;

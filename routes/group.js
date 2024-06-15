@@ -1,6 +1,6 @@
 const express = require("express");
 const { verifyToken } = require("../middleware/auth");
-const { Account, Group, Band, GroupMember, Type, Answer, Poll, sequelize } = require("../models");
+const { Account, Group, Band, GroupMember, Type, Answer, Poll, Question, Option, Event, sequelize } = require("../models");
 
 const router = express.Router();
 
@@ -240,13 +240,14 @@ router.delete("/remove-member", verifyToken, async (req, res) => {
 //});
 
 router.get("/get-feed/:groupId", verifyToken, async (req, res) => {
+  console.log("GET /get-feed/:groupId")
+
   const { groupId } = req.params;
   const accountId = req.account.accountId;
   const start = parseInt(req.query.start) || 0;
   const limit = 20;
 
   try {
-    // Verify if the user is a member of the group
     const isMember = await GroupMember.count({
       where: { GroupID: groupId, AccountID: accountId },
     });
@@ -262,9 +263,12 @@ router.get("/get-feed/:groupId", verifyToken, async (req, res) => {
         model: Event,
         as: "events",
         attributes: [
-          "id",
-          "title",
-          "description",
+          "EventID",
+          "Title",
+          "Description",
+          "Location",
+          "Date",
+          "Duration",
           "createdAt",
           "updatedAt",
           "TypeID",
@@ -281,12 +285,13 @@ router.get("/get-feed/:groupId", verifyToken, async (req, res) => {
         model: Poll,
         as: "polls",
         attributes: [
-          "id",
-          "title",
-          "description",
+          "PollID",
+          "Title",
+          "Description",
           "createdAt",
           "updatedAt",
           "TypeID",
+          "IsClosed",
         ],
         limit: limit,
         offset: start,

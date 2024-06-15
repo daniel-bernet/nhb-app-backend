@@ -4,10 +4,14 @@ const router = express.Router();
 // Import route modules
 const accountRoutes = require('./account');
 const groupRoutes = require('./group');
+const eventRoutes = require('./event');
+const typeRoutes = require('./type');
 
 // Use routes
 router.use('/account', accountRoutes);
 router.use('/group', groupRoutes);
+router.use('/event', eventRoutes);
+router.use('/type', typeRoutes);
 
 // Handle 404 - Not found
 router.use((req, res, next) => {
