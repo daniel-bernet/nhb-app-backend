@@ -6,12 +6,14 @@ const accountRoutes = require('./account');
 const groupRoutes = require('./group');
 const eventRoutes = require('./event');
 const typeRoutes = require('./type');
+const pollRoutes = require('./poll');
 
 // Use routes
 router.use('/account', accountRoutes);
 router.use('/group', groupRoutes);
 router.use('/event', eventRoutes);
 router.use('/type', typeRoutes);
+router.use('/poll', pollRoutes);
 
 // Handle 404 - Not found
 router.use((req, res, next) => {

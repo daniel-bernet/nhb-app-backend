@@ -509,6 +509,21 @@
 |                   | **Content**: `{ "error": "Error message here" }` |
 | **Description**   | This endpoint closes a poll, preventing any further responses by setting its IsClosed status to true. |
 
+### Get Poll Options
+
+| Aspect            | Details                                       |
+|-------------------|-----------------------------------------------|
+| **Route**         | `/poll/get-options`                           |
+| **HTTP Method**   | GET                                           |
+| **Headers**       | `Authorization`: Bearer Token, `Content-Type`: application/json |
+| **Query Parameters** | None                                        |
+| **Request Body**  | None                                          |
+| **Success Response** | **Code**: 200 OK                         |
+|                   | **Content**: `{ "data": [{"OptionID": "uuid", "Option": "string", "Description": "string", "SentimentID": "integer", "sentiment": {"Sentiment": "string"}}], "message": "Options fetched successfully" }` |
+| **Error Response**| **Code**: 500 Internal Server Error            |
+|                   | **Content**: `{ "error": "Internal Server Error", "details": "error description" }`|
+| **Description**   | This endpoint retrieves all available options for poll creation along with their associated sentiments. This is useful for administrators or poll creators to understand what options are available for inclusion in new polls. |
+
 ## Event Endpoints
 
 ### Create Event
