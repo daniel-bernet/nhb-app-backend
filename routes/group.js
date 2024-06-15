@@ -1,6 +1,6 @@
 const express = require("express");
 const { verifyToken } = require("../middleware/auth");
-const { Account, Group, Band, GroupMember, Type, Answer, Poll, Question, Option, Event, sequelize } = require("../models");
+const { Account, Group, Band, GroupMember, Type, Answer, Poll, Question, Option, Event, Sentiment, sequelize } = require("../models");
 
 const router = express.Router();
 
@@ -303,7 +303,7 @@ router.get("/get-feed/:groupId", verifyToken, async (req, res) => {
             as: "questions",
             include: [
               { model: Option, as: "options", include: ["sentiment"] },
-              { model: Answer, as: "answers" },
+              { model: Answer, as: "answers", include: [{ model: Option, as: "option", include: ["sentiment"] }] },
             ],
           },
         ],
