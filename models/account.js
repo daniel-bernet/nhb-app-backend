@@ -56,7 +56,11 @@ module.exports = (sequelize, DataTypes) => {
       otherKey: 'GroupID',
       as: 'groups',
     });
-  };
-
+    this.hasMany(models.GroupMember, {
+      foreignKey: 'AccountID',
+      as: 'members',
+    });
+  }
+  
   return Account;
 };

@@ -297,14 +297,27 @@ router.get("/get-feed/:groupId", verifyToken, async (req, res) => {
         offset: start,
         order: [["updatedAt", "DESC"]],
         include: [
-          { model: Type, as: "pollType", attributes: ["Label"] },
+          { 
+            model: Type, as: "pollType", attributes: ["Label"] 
+          },
           {
             model: Question,
             as: "questions",
             include: [
-              { model: Option, as: "options", include: ["sentiment"] },
-              { model: Answer, as: "answers", include: [{ model: Option, as: "option", include: ["sentiment"] }] },
+              { 
+                model: Option, as: "options", include: ["sentiment"] 
+              },
+              {
+                model: Answer, as: "answers", include: [
+                  { model: Option, as: "option", include: ["sentiment"] },
+                  {
+                    model: GroupMember, as: "groupMember", include: [
+                      { model: Account, as: "account", attributes: ["FirstName", "LastName", "AccountID"] },
+                    ]
+                  },]
+              },
             ],
+            attributes: ["QuestionID", "Question", "Date", "Description", "Duration"],
           },
         ],
       },

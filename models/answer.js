@@ -51,13 +51,6 @@ module.exports = (sequelize) => {
       },
       constraints: false
     });
-    this.belongsTo(models.Account, {
-      foreignKey: 'GroupMemberID',
-      otherKey: 'AccountID',
-      as: 'account',
-      through: models.GroupMember,
-      constraints: false
-    });
   };
 
   return Answer;

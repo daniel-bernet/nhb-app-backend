@@ -54,4 +54,3 @@ To migrate and set up my DB I make use of the sequelize migration and seeder scr
 - take a look at cascade configuration of sequelize models to ensure correct data deletion. test that no residual data is left behind wich would compremise data integrity of the database as all endpoints have been implemented!
 - include answers in get poll info endpoint
 - error handling on account creation if already present -> appripriate error message
-

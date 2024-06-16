@@ -1,7 +1,7 @@
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  class GroupMember extends Model {}
+  class GroupMember extends Model { }
 
   GroupMember.init(
     {
@@ -44,10 +44,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "AccountID",
       as: "account",
     });
-//    this.hasMany(models.Answer, {
-//      foreignKey: "GroupMemberID",
-//      as: "answers",
-//    });
+    this.hasMany(models.Answer, {
+      foreignKey: "GroupMemberID",
+      as: "answers",
+    });
   };
 
   return GroupMember;
