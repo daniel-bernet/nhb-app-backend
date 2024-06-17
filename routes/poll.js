@@ -4,6 +4,7 @@ const { Poll, Option, Sentiment, Question, PollQuestionJoin, QuestionOptionJoin,
 
 const router = express.Router();
 
+// create poll endpoint with questions and default answers
 router.post('/create-poll', verifyToken, async (req, res) => {
     const { groupID, typeID, title, description, questions } = req.body;
 

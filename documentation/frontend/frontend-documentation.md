@@ -12,6 +12,7 @@
 - create event out of poll functionality
 - create group out of poll functionality
 - page information update upon data-change
+- display that no accounts have been found if search account list is empty in group creation add member alert
 
 ## Dev notes
 

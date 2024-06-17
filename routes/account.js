@@ -3,6 +3,7 @@ const { verifyToken } = require('../middleware/auth');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { Account, Group, Band } = require('../models');
+const { Op } = require('sequelize');
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -195,6 +196,39 @@ router.get('/get-basic-group-information', verifyToken, async (req, res) => {
         res.status(200).json({ groups: account.groups });
     } catch (error) {
         console.log(error)
+        res.status(500).json({ error: 'Internal Server Error', details: error.message });
+    }
+});
+
+// Search for accounts endpoint excluding the requester
+router.get('/search-account', verifyToken, async (req, res) => {
+    const searchText = req.query.searchText;
+    const accountId = req.account.accountId; // Extract the accountId from token
+
+    if (!searchText) {
+        return res.status(400).json({ message: 'Search text is required' });
+    }
+
+    try {
+        const accounts = await Account.findAll({
+            where: {
+                [Op.and]: [
+                    {
+                        [Op.or]: [
+                            { FirstName: { [Op.iLike]: `%${searchText}%` } },
+                            { LastName: { [Op.iLike]: `%${searchText}%` } },
+                            { Email: { [Op.iLike]: `%${searchText}%` } }
+                        ]
+                    },
+                    { AccountID: { [Op.ne]: accountId } } // Exclude the requester's account
+                ]
+            },
+            attributes: ['AccountID', 'FirstName', 'LastName', 'Email']
+        });
+
+        res.status(200).json(accounts);
+    } catch (error) {
+        console.error('Error searching accounts:', error);
         res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
 });

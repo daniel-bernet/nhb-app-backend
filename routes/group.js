@@ -4,42 +4,62 @@ const { Account, Group, Band, GroupMember, Type, Answer, Poll, Question, Option,
 
 const router = express.Router();
 
-// Create Group endpoint
+// Create Group endpoint with multiple initial members
 router.post("/create", verifyToken, async (req, res) => {
-  const accountId = req.account.accountId;
-  const { name, description } = req.body;
-
+  const { name, description, accountIds } = req.body;
+  const creatorAccountId = req.account.accountId;
   const transaction = await sequelize.transaction();
 
   try {
-    const newGroup = await Group.create(
-      {
-        Name: name,
-        Description: description,
-        BandID: 1,
-      },
-      { transaction }
-    );
+    const newGroup = await Group.create({
+      Name: name,
+      Description: description,
+      BandID: 1
+    }, { transaction });
 
-    await GroupMember.create(
-      {
+    await GroupMember.create({
+      GroupID: newGroup.GroupID,
+      AccountID: creatorAccountId
+    }, { transaction });
+
+    for (const accountId of accountIds) {
+      const accountExists = await Account.findByPk(accountId);
+      if (!accountExists) {
+        throw new Error(`Account ID ${accountId} not found`);
+      }
+      await GroupMember.create({
         GroupID: newGroup.GroupID,
-        AccountID: accountId,
-      },
-      { transaction }
-    );
+        AccountID: accountId
+      }, { transaction });
+    }
+
+    returnGroup = await Group.findByPk(newGroup.GroupID, {
+      include: [
+        {
+          model: Band,
+          as: 'band',
+          attributes: ['Description']
+        },
+        {
+          model: Account,
+          as: 'members',
+          attributes: ['AccountID']
+        }
+      ],
+      attributes: ['GroupID', 'Name', 'Description']
+    });
 
     await transaction.commit();
-
     res.status(201).json({
-      message: "Group created successfully, member added",
-      group: newGroup,
+      message: "Group created successfully with members added",
+      group: returnGroup
     });
   } catch (error) {
     await transaction.rollback();
     res.status(500).json({ error: error.message });
   }
 });
+
 
 // Delete Group endpoint
 router.delete("/delete/:groupId", verifyToken, async (req, res) => {
@@ -297,15 +317,15 @@ router.get("/get-feed/:groupId", verifyToken, async (req, res) => {
         offset: start,
         order: [["updatedAt", "DESC"]],
         include: [
-          { 
-            model: Type, as: "pollType", attributes: ["Label"] 
+          {
+            model: Type, as: "pollType", attributes: ["Label"]
           },
           {
             model: Question,
             as: "questions",
             include: [
-              { 
-                model: Option, as: "options", include: ["sentiment"] 
+              {
+                model: Option, as: "options", include: ["sentiment"]
               },
               {
                 model: Answer, as: "answers", include: [

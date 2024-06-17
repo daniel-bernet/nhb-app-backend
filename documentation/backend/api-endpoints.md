@@ -210,28 +210,43 @@
 |                      | information such as group name, description, and ID. This endpoint requires|
 |                      | authentication and is accessible only to the account holder.               |
 
+### Search Accounts
+
+| Aspect               | Details                                              |
+|----------------------|------------------------------------------------------|
+| **Route**            | `account/search-account`                                    |
+| **HTTP Method**      | GET                                                  |
+| **Headers**          | `Authorization`: Bearer Token, `Content-Type`: application/json |
+| **Query Parameters** | `searchText` (string): The text to search for in account first names, last names, or emails. |
+| **Request Body**     | None                                                 |
+| **Success Response** | **Code**: 200 OK                                     |
+|                      | **Content**: `[{"AccountID": "UUID", "FirstName": "John", "LastName": "Doe", "Email": "john.doe@example.com"}, ...]` |
+| **Error Response**   | **Code**: 400 Bad Request                            |
+|                      | **Content**: `{ "message": "Search text is required" }` |
+|                      | **Code**: 500 Internal Server Error                  |
+|                      | **Content**: `{ "error": "Internal Server Error", "details": "error message" }` |
+| **Description**      | Searches for accounts based on the provided text but excludes the account of the user making the request. It looks for matches in first names, last names, or emails. |
+
 ## Group Endpoints
 
 ### Create Group
 
 | Aspect               | Details                                                                   |
 |----------------------|---------------------------------------------------------------------------|
-| **Route**            | `/group/create`                                                                 |
+| **Route**            | `/group/create`                                                           |
 | **HTTP Method**      | POST                                                                      |
 | **Headers**          | `Authorization`: Bearer Token, `Content-Type`: application/json           |
 | **Query Parameters** | None                                                                      |
-| **Request Body**     | `{ "name": "Group Name", "description": "Group Description" }`            |
+| **Request Body**     | `{ "name": "Group Name", "description": "Group Description", "accountIds": ["UUID1", "UUID2"] }` |
 | **Success Response** | **Code**: 201                                                             |
-|                      | **Content**: `{ "message": "Group created successfully, member added", "group": { "GroupID": "", "Name": "", "Description": "" } }` |
-| **Error Response**   | **Code**: 404 Not Found                                                   |
+|                      | **Content**: `{ "message": "Group created successfully with members added", "group": { "GroupID": "UUID", "Name": "string", "Description": "string" } }` |
+| **Error Response**   | **Code**: 400 Bad Request                                                 |
+|                      | **Content**: `{ "error": "Invalid account ID(s)" }`                       |
+|                      | **Code**: 404 Not Found                                                   |
 |                      | **Content**: `{ "error": "Account not found" }`                           |
 |                      | **Code**: 500 Internal Server Error                                       |
-|                      | **Content**: `{ "error": "Error message here" }`                          |
-| **Description**      | This endpoint is used for creating a new group and automatically adding the|
-|                      | creator as the first member of the group. The group will be associated with|
-|                      | a fixed BandID, reflecting the current limitation of supporting only one band.|
-|                      | The transaction ensures that both the creation of the group and the addition|
-|                      | of the member are successful, otherwise, no changes are committed to the database. |
+|                      | **Content**: `{ "error": "Internal Server Error", "details": "error message" }` |
+| **Description**      | This endpoint is used for creating a new group and optionally adding multiple members. Each member is validated before addition. The transaction ensures all operations (group creation and member additions) are successful; otherwise, no changes are committed. Supports only one band by associating a fixed BandID. |
 
 ### Delete Group
 
@@ -629,19 +644,23 @@
 
 ## Answer Endpoints
 
-### Edit Answer
+### Submit Answers
 
-| Aspect            | Details                                       |
-|-------------------|-----------------------------------------------|
-| **Route**         | `/answer/edit-answer/:answerId`                      |
-| **HTTP Method**   | PATCH                                         |
-| **Headers**       | `Authorization`: Bearer Token, `Content-Type`: application/json |
-| **Query Parameters** | `answerId` (UUID): ID of the answer to edit |
-| **Request Body**  | `{ "optionId": "UUID" }`                      |
-| **Success Response** | **Code**: 200 OK                         |
-|                   | **Content**: `{ "message": "Answer updated successfully", "answer": {...} }` |
-| **Error Response**| **Code**: 404 Not Found                      |
-|                   | **Content**: `{ "error": "Answer not found" }`|
-|                   | **Code**: 500 Internal Server Error          |
-|                   | **Content**: `{ "error": "Error message here" }` |
-| **Description**   | Allows updating the option selected in an answer, enabling modifications post-submission or corrections to an existing response. |
+| Aspect               | Details                                              |
+|----------------------|------------------------------------------------------|
+| **Route**            | `/answer/submit-answer`                              |
+| **HTTP Method**      | POST                                                 |
+| **Headers**          | `Authorization`: Bearer Token, `Content-Type`: application/json |
+| **Query Parameters** | None                                                 |
+| **Request Body**     | `{ "pollId": "UUID", "answers": [{"questionId": "UUID", "optionId": "UUID"}, ...] }` |
+| **Success Response** | **Code**: 200 OK                                     |
+|                      | **Content**: `{ "message": "Answers submitted successfully" }` |
+| **Error Response**   | **Code**: 400 Bad Request                            |
+|                      | **Content**: `{ "error": "All questions must be answered" }` |
+|                      | **Code**: 403 Forbidden                              |
+|                      | **Content**: `{ "error": "Poll is closed" }`         |
+|                      | **Code**: 404 Not Found                              |
+|                      | **Content**: `{ "error": "Poll not found" }`         |
+|                      | **Code**: 500 Internal Server Error                  |
+|                      | **Content**: `{ "error": "Internal Server Error", "details": "error message" }` |
+| **Description**      | This endpoint allows users to submit their answers for all questions associated with a specific poll. It validates that all questions are answered, the answers belong to the correct options, and the user is a member of the poll's group. |
