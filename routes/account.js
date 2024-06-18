@@ -182,7 +182,7 @@ router.get('/get-basic-group-information', verifyToken, async (req, res) => {
                     {
                         model: Account,
                         as: 'members',
-                        attributes: ['AccountID']
+                        attributes: ['AccountID', 'FirstName', 'LastName']
                     }
                 ],
                 attributes: ['GroupID', 'Name', 'Description']

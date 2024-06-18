@@ -39,11 +39,15 @@ module.exports = (sequelize, DataTypes) => {
     });
     this.hasMany(models.Event, {
       foreignKey: 'GroupID',
-      as: 'events'
+      as: 'events',
+      onDelete: 'CASCADE',
+      hooks: true,
     });
     this.hasMany(models.Poll, {
       foreignKey: 'GroupID',
-      as: 'polls'
+      as: 'polls',
+      onDelete: 'CASCADE',
+      hooks: true,
     });
     this.belongsToMany(models.Account, {
       through: models.GroupMember,
@@ -53,7 +57,9 @@ module.exports = (sequelize, DataTypes) => {
     });
     this.hasMany(models.GroupMember, {
       foreignKey: 'GroupID',
-      as: 'groupMembers'
+      as: 'groupMembers',
+      onDelete: 'CASCADE',
+      hooks: true,
     });
   };
 

@@ -47,6 +47,8 @@ module.exports = (sequelize, DataTypes) => {
     this.hasMany(models.Answer, {
       foreignKey: "GroupMemberID",
       as: "answers",
+      onDelete: 'CASCADE',
+      hooks: true,
     });
   };
 

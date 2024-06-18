@@ -1,6 +1,6 @@
 const express = require("express");
 const { verifyToken } = require("../middleware/auth");
-const { Account, Group, Band, GroupMember, Type, Answer, Poll, Question, Option, Event, Sentiment, sequelize } = require("../models");
+const { Account, Group, Band, GroupMember, Type, Answer, Poll, Question, Option, Event, Sentiment, PollQuestionJoin, sequelize } = require("../models");
 
 const router = express.Router();
 
@@ -72,12 +72,6 @@ router.delete("/delete/:groupId", verifyToken, async (req, res) => {
       return res.status(404).json({ error: "Group not found" });
     }
 
-    await Answer.destroy({ where: { GroupID: groupId }, transaction });
-    await PollQuestionJoin.destroy({ where: { PollID: groupId }, transaction });
-    await Question.destroy({ where: { GroupID: groupId }, transaction });
-    await Poll.destroy({ where: { GroupID: groupId }, transaction });
-    await Event.destroy({ where: { GroupID: groupId }, transaction });
-    await GroupMember.destroy({ where: { GroupID: groupId }, transaction });
     await group.destroy({ transaction });
 
     await transaction.commit();

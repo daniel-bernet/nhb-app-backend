@@ -42,11 +42,14 @@ module.exports = (sequelize) => {
       through: {
         model: models.PollQuestionJoin,
         unique: false,
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
+        hooks: true,
       },
       foreignKey: 'PollID',
       otherKey: 'QuestionID',
-      as: 'questions'
+      as: 'questions',
+      onDelete: 'CASCADE',
+      hooks: true,
     });
     this.belongsTo(models.Group, {
       foreignKey: 'GroupID',

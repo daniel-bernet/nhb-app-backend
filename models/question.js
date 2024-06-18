@@ -41,8 +41,9 @@ module.exports = (sequelize) => {
     });
     this.hasMany(models.Answer, {
       foreignKey: 'QuestionID',
+      as: 'answers',
       onDelete: 'CASCADE',
-      as: 'answers'
+      hooks: true,
     });
     this.belongsToMany(models.Option, {
       through: models.QuestionOptionJoin,
