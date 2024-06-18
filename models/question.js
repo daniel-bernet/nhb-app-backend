@@ -46,7 +46,12 @@ module.exports = (sequelize) => {
       hooks: true,
     });
     this.belongsToMany(models.Option, {
-      through: models.QuestionOptionJoin,
+      through: {
+        model: models.QuestionOptionJoin,
+        unique: false,
+        onDelete: 'CASCADE',
+        hooks: true,
+      },
       foreignKey: 'QuestionID',
       otherKey: 'OptionID',
       as: 'options'

@@ -45,7 +45,7 @@ module.exports = (sequelize) => {
       foreignKey: 'GroupMemberID',
       otherKey: 'GroupID',
       as: 'group',
-      through: { //not sure if this is correct, in case of error investigate here!
+      through: {
         model: models.GroupMember,
         unique: false
       },

@@ -27,11 +27,13 @@ module.exports = (sequelize) => {
   PollQuestionJoin.associate = function (models) {
     this.belongsTo(models.Poll, {
       foreignKey: 'PollID',
-      onDelete: 'CASCADE'
+      onDelete: 'CASCADE',
+      hooks: true,
     });
     this.belongsTo(models.Question, {
       foreignKey: 'QuestionID',
-      onDelete: 'CASCADE'
+      onDelete: 'CASCADE',
+      hooks: true,
     });
   };
 

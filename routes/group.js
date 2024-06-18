@@ -89,7 +89,19 @@ router.get("/info/:groupId", verifyToken, async (req, res) => {
   const { groupId } = req.params;
   try {
     const group = await Group.findByPk(groupId, {
-      include: ["members"],
+      include: [
+        {
+          model: Band,
+          as: 'band',
+          attributes: ['Description']
+        },
+        {
+          model: Account,
+          as: 'members',
+          attributes: ['AccountID', 'FirstName', 'LastName']
+        }
+      ],
+      attributes: ['GroupID', 'Name', 'Description']
     });
     if (!group) {
       return res.status(404).json({ error: "Group not found" });
@@ -210,48 +222,6 @@ router.delete("/remove-member", verifyToken, async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
-//// Get Events for a Group
-//router.get("/events/:groupId", verifyToken, async (req, res) => {
-//  const { groupId } = req.params;
-//  try {
-//    const group = await Group.findByPk(groupId, {
-//      include: [
-//        {
-//          model: sequelize.models.Event,
-//          as: "events",
-//        },
-//      ],
-//    });
-//    if (!group) {
-//      return res.status(404).json({ error: "Group not found" });
-//    }
-//    res.json(group.events);
-//  } catch (error) {
-//    res.status(500).json({ error: error.message });
-//  }
-//});
-//
-//// Get Polls for a Group
-//router.get("/polls/:groupId", verifyToken, async (req, res) => {
-//  const { groupId } = req.params;
-//  try {
-//    const group = await Group.findByPk(groupId, {
-//      include: [
-//        {
-//          model: sequelize.models.Poll,
-//          as: "polls",
-//        },
-//      ],
-//    });
-//    if (!group) {
-//      return res.status(404).json({ error: "Group not found" });
-//    }
-//    res.json(group.polls);
-//  } catch (error) {
-//    res.status(500).json({ error: error.message });
-//  }
-//});
 
 router.get("/get-feed/:groupId", verifyToken, async (req, res) => {
   console.log("GET /get-feed/:groupId")

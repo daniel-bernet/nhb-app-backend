@@ -86,26 +86,6 @@ router.delete('/delete/:pollId', verifyToken, async (req, res) => {
             return res.status(404).json({ error: 'Poll not found' });
         }
 
-        // Delete Answers associated with the Poll's Questions
-        await Answer.destroy({
-            where: {
-                QuestionID: sequelize.where(sequelize.col('question.QuestionID'), 'IN', sequelize.literal(`(SELECT QuestionID FROM PollQuestionJoins WHERE PollID = '${pollId}')`))
-            }
-        }, { transaction });
-
-        // Delete PollQuestionJoins
-        await PollQuestionJoin.destroy({
-            where: { PollID: pollId }
-        }, { transaction });
-
-        // Delete Questions associated with the Poll
-        await Question.destroy({
-            where: {
-                QuestionID: sequelize.where(sequelize.col('QuestionID'), 'IN', sequelize.literal(`(SELECT QuestionID FROM PollQuestionJoins WHERE PollID = '${pollId}')`))
-            }
-        }, { transaction });
-
-        // Finally, delete the Poll itself
         await poll.destroy({ transaction });
 
         await transaction.commit();
