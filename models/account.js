@@ -1,5 +1,5 @@
 const { Model } = require('sequelize');
-
+const bcrypt = require('bcrypt');
 
 module.exports = (sequelize, DataTypes) => {
   class Account extends Model { }
@@ -63,6 +63,6 @@ module.exports = (sequelize, DataTypes) => {
       hooks: true,
     });
   }
-  
+
   return Account;
 };

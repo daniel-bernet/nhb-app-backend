@@ -2,27 +2,63 @@ const express = require('express');
 const { verifyToken } = require('../middleware/auth');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { Account, Group, Band } = require('../models');
+const { Account, Group, Band, sequelize } = require('../models');
 const { Op } = require('sequelize');
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
 
+// Authenticate JWT endpoint
+router.get('/authenticate', verifyToken, async (req, res) => {
+    const accountId = req.account.accountId;
+
+    try {
+        const account = await Account.findByPk(accountId);
+        if (!account) {
+            return res.status(404).json({ error: 'Account not found' });
+        }
+
+        res.status(200).json({ message: 'Token is valid', account: { accountId: account.AccountID, firstName: account.FirstName, lastName: account.LastName, email: account.Email } });
+    } catch (error) {
+        console.error('Failed to authenticate token:', error);
+        res.status(500).json({ error: 'Internal Server Error', details: error.message });
+    }
+});
+
+
 // Create account endpoint
 router.post('/create-account', async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
+
     try {
+        const existingAccount = await Account.findOne({ where: { Email: email } });
+        if (existingAccount) {
+            return res.status(409).json({ error: 'Email already in use' });
+        }
+
         const newAccount = await Account.create({
             FirstName: firstName,
             LastName: lastName,
             Email: email,
             PasswordHash: password,
         });
-        res.status(201).json({ message: 'Account created successfully' });
+
+        const token = jwt.sign(
+            { accountId: newAccount.AccountID },
+            JWT_SECRET,
+            { expiresIn: '8h' }
+        );
+
+        res.status(201).json({ message: 'Account created successfully', token });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        if (error.name === 'SequelizeValidationError') {
+            return res.status(400).json({ error: 'Validation error', details: error.errors.map(e => e.message) });
+        }
+        console.error('Failed to create account:', error);
+        res.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
 });
+
 
 // Login endpoint
 router.post('/login', async (req, res) => {
@@ -46,6 +82,7 @@ router.post('/login', async (req, res) => {
 
         res.status(200).json({ message: 'Login successful', token });
     } catch (error) {
+        console.log(error)
         res.status(500).json({ error: error.message });
     }
 });

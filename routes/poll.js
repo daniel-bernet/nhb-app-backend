@@ -1,6 +1,7 @@
 const express = require('express');
 const { verifyToken } = require('../middleware/auth');
 const { Poll, Option, Sentiment, Question, PollQuestionJoin, QuestionOptionJoin, GroupMember, Answer, Group, sequelize } = require('../models');
+const { transaction } = require('sequelize');
 
 const router = express.Router();
 

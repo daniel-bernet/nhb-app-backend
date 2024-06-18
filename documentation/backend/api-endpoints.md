@@ -45,6 +45,25 @@
 
 ## Account Endpoints
 
+### Authenticate JWT Token
+
+| Aspect               | Details                                                                   |
+|----------------------|---------------------------------------------------------------------------|
+| **Route**            | `/account/authenticate`                                                           |
+| **HTTP Method**      | GET                                                                       |
+| **Headers**          | `Authorization`: Bearer Token, `Content-Type`: application/json           |
+| **Query Parameters** | None                                                                      |
+| **Request Body**     | None                                                                      |
+| **Success Response** | **Code**: 200 OK                                                          |
+|                      | **Content**: `{ "message": "Token is valid", "account": { "accountId": "UUID", "firstName": "John", "lastName": "Doe", "email": "john.doe@example.com" } }` |
+| **Error Response**   | **Code**: 404 Not Found                                                   |
+|                      | **Content**: `{ "error": "Account not found" }`                           |
+|                      | **Code**: 401 Unauthorized                                                |
+|                      | **Content**: `{ "error": "Invalid token" }`                               |
+|                      | **Code**: 500 Internal Server Error                                       |
+|                      | **Content**: `{ "error": "Internal Server Error", "details": "error message here" }` |
+| **Description**      | This endpoint verifies the validity of a JWT token and checks if the associated user exists in the system. If the token is valid and the user exists, it returns the user's account details. This ensures that the token not only is valid but also corresponds to a current user. |
+
 ### Login
 
 | Aspect            | Details                                       |
@@ -87,16 +106,20 @@
 
 | Aspect            | Details                                       |
 |-------------------|-----------------------------------------------|
-| **Route**         | `/account/create-account`                 |
+| **Route**         | `/create-account`                             |
 | **HTTP Method**   | POST                                          |
 | **Headers**       | `Content-Type`: application/json              |
-| **Query Parameters** | None                                      |
-| **Request Body**  | `{ "firstName": "John", "lastName": "Doe", "email": "johndoe@example.com", "password": "yourPassword" }` |
-| **Success Response** | **Code**: 201 Created                    |
-|                   | **Content**: `{ "message": "Account created successfully" }` |
-| **Error Response**| **Code**: 500 Internal Server Error          |
-|                   | **Content**: `{ "error": "Error message here" }` |
-| **Description**   | This endpoint allows for the creation of a new account with first name, last name, email, and password. |
+| **Query Parameters** | None                                        |
+| **Request Body**  | `{ "firstName": "John", "lastName": "Doe", "email": "john.doe@example.com", "password": "yourpassword" }` |
+| **Success Response** | **Code**: 201 OK                           |
+|                   | **Content**: `{ "message": "Account created successfully", "token": "jwt_token_here" }` |
+| **Error Response**| **Code**: 400 Bad Request                     |
+|                   | **Content**: `{ "error": "Validation error", "details": ["Specific error messages..."] }`|
+|                   | **Code**: 409 Conflict                        |
+|                   | **Content**: `{ "error": "Email already in use" }`|
+|                   | **Code**: 500 Internal Server Error           |
+|                   | **Content**: `{ "error": "Internal Server Error", "details": "error message" }`|
+| **Description**   | This endpoint is used for creating a new user account. It requires the user's first name, last name, email, and password. The email must not already be registered in the system. The password is securely hashed before storage. Upon successful account creation, a JSON Web Token (JWT) is returned for authenticating further requests. The endpoint handles various errors including validation errors and the case where the email is already in use. |
 
 ### Get Account Information
 

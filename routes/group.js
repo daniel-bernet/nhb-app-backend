@@ -134,45 +134,46 @@ router.patch("/edit/:groupId", verifyToken, async (req, res) => {
 router.post("/add-member", verifyToken, async (req, res) => {
   const { groupId, manipulateAccountId } = req.body;
   const transaction = await sequelize.transaction();
-  try {
-    const member = await GroupMember.create(
-      {
-        GroupID: groupId,
-        AccountID: manipulateAccountId,
-      },
-      { transaction }
-    );
 
-    // Retrieve all open polls to set default answers
+  try {
+    const member = await GroupMember.create({
+      GroupID: groupId,
+      AccountID: manipulateAccountId,
+    }, { transaction });
+
+    const option = await Option.findOne({
+      where: { Option: 'unanswered' },
+      transaction
+    });
+
     const polls = await Poll.findAll({
       where: { GroupID: groupId, IsClosed: false },
-      transaction,
+      include: [{
+        model: Question,
+        as: 'questions',
+        through: { attributes: [] },
+      }],
+      transaction
     });
+
     for (const poll of polls) {
-      const questions = await Question.findAll({
-        where: { PollID: poll.PollID },
-        transaction,
-      });
-      for (const question of questions) {
-        await Answer.create(
-          {
-            QuestionID: question.QuestionID,
-            GroupMemberID: member.GroupMemberID,
-            OptionID: "UNANSWERED_OPTION_ID", // This should be replaced with the actual ID once available
-          },
-          { transaction }
-        );
+      for (const question of poll.questions) {
+        await Answer.create({
+          QuestionID: question.QuestionID,
+          GroupMemberID: member.GroupMemberID,
+          OptionID: option.OptionID,
+        }, { transaction });
       }
     }
 
     await transaction.commit();
     res.status(201).json({
-      message:
-        "Member added successfully and default answers set for open polls",
+      message: "Member added successfully and default answers set for open polls",
       member,
     });
   } catch (error) {
     await transaction.rollback();
+    console.error("Failed to add member to group:", error);
     res.status(500).json({ error: error.message });
   }
 });
