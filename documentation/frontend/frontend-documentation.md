@@ -2,11 +2,7 @@
 
 ## ToDos
 
-- css global
-- jwt storage and persistant login
-- create event out of poll functionality
-- create group out of poll functionality
-- display that no accounts have been found if search account list is empty in group creation add member alert
+- validate input within questions for create poll
 
 ## Dev notes
 
