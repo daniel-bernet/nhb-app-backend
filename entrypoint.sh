@@ -16,4 +16,4 @@ echo "Running migrations..."
 npx sequelize-cli db:migrate
 
 echo "Starting application..."
-npm start
+node server.js

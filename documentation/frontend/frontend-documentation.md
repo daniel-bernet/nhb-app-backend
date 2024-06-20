@@ -3,6 +3,9 @@
 ## ToDos
 
 - validate input within questions for create poll
+- remove background of "login" and "register" on auth pages
+- styling create-group page
+- placeholder for create-poll inputs
 
 ## Dev notes
 
