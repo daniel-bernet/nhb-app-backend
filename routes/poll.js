@@ -118,39 +118,6 @@ router.patch('/edit/:pollId', verifyToken, async (req, res) => {
     }
 });
 
-// Get Poll Info with details
-router.get('/info/:pollId', verifyToken, async (req, res) => {
-    const { pollId } = req.params;
-
-    try {
-        const poll = await Poll.findByPk(pollId, {
-            include: [{
-                model: Question,
-                as: 'questions',
-                include: [{
-                    model: Option,
-                    as: 'options',
-                    include: ['sentiment']
-                }, {
-                    model: Answer,
-                    as: 'answers'
-                }]
-            }, {
-                model: Type,
-                as: 'pollType'
-            }]
-        });
-
-        if (!poll) {
-            return res.status(404).json({ error: 'Poll not found' });
-        }
-
-        res.json(poll);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
 // Open a Poll
 router.patch('/open/:pollId', verifyToken, async (req, res) => {
     const { pollId } = req.params;

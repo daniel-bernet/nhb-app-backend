@@ -112,24 +112,6 @@ router.get("/info/:groupId", verifyToken, async (req, res) => {
   }
 });
 
-// Edit Group Info
-router.patch("/edit/:groupId", verifyToken, async (req, res) => {
-  const { groupId } = req.params;
-  const { name, description } = req.body;
-  try {
-    const group = await Group.findByPk(groupId);
-    if (!group) {
-      return res.status(404).json({ error: "Group not found" });
-    }
-    group.Name = name || group.Name;
-    group.Description = description || group.Description;
-    await group.save();
-    res.status(200).json({ message: "Group updated successfully" });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
 // Add Member to Group
 router.post("/add-member", verifyToken, async (req, res) => {
   const { groupId, manipulateAccountId } = req.body;

@@ -1,22 +1,8 @@
 const express = require('express');
 const { verifyToken } = require('../middleware/auth');
-const { Sequelize, DataTypes } = require('sequelize');
-const config = require('../config/config.js');
-const defineEventModel = require('../models/event');
+const { Event, sequelize, DataTypes } = require('../models');
 
 const router = express.Router();
-const sequelize = new Sequelize(
-    config.development.database,
-    config.development.username,
-    config.development.password,
-    {
-        host: config.development.host,
-        dialect: config.development.dialect,
-        port: config.development.port,
-    }
-);
-
-const Event = defineEventModel(sequelize, DataTypes);
 
 // Create Event
 router.post('/create', verifyToken, async (req, res) => {
@@ -26,22 +12,6 @@ router.post('/create', verifyToken, async (req, res) => {
             GroupID, TypeID, Title, Description, Location, Date, Duration
         });
         res.status(201).json({ message: 'Event created successfully', event });
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-// Get Event Information
-router.get('/info/:eventId', verifyToken, async (req, res) => {
-    const { eventId } = req.params;
-    try {
-        const event = await Event.findByPk(eventId, {
-            include: ['group', 'eventType']
-        });
-        if (!event) {
-            return res.status(404).json({ error: 'Event not found' });
-        }
-        res.json(event);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

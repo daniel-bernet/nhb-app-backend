@@ -1,16 +1,5 @@
 # API Endpoint Documentation
 
-## Endpoints overview
-
-### Needed Endpoints
-
-- validate JWT (then generate a new jwt)
-- get group info should contain all events, polls, messages etc.
-
-### No longer needed Endpoints
-
-- Group: get polls, get events
-
 ## Examples
 
 ### Template for New Endpoints
@@ -305,23 +294,6 @@
 |                   | **Content**: `{ "error": "Error message here" }` |
 | **Description**   | Retrieves detailed information about a group, including its members. |
 
-### Edit Group Information
-
-| Aspect            | Details                                       |
-|-------------------|-----------------------------------------------|
-| **Route**         | `/group/edit/:groupId`                        |
-| **HTTP Method**   | PATCH                                         |
-| **Headers**       | `Authorization`: Bearer Token, `Content-Type`: application/json              |
-| **Query Parameters** | `groupId` (UUID): ID of the group to edit  |
-| **Request Body**  | `{ "name": "NewGroupName", "description": "NewGroupDescription" }` |
-| **Success Response** | **Code**: 200 OK                         |
-|                   | **Content**: `{ "message": "Group updated successfully" }` |
-| **Error Response**| **Code**: 404 Not Found                      |
-|                   | **Content**: `{ "error": "Group not found" }`|
-|                   | **Code**: 500 Internal Server Error          |
-|                   | **Content**: `{ "error": "Error message here" }` |
-| **Description**   | Updates the name and/or description of a specific group. |
-
 ### Add Member to Group
 
 | Aspect            | Details                                       |
@@ -354,40 +326,6 @@
 |                   | **Content**: `{ "error": "Error message here" }` |
 | **Description**   | Removes a member from a group and deletes all their answers to poll questions. If the removed member is the last one in the group, the entire group and all related data (events, polls, answers) are also deleted, ensuring no orphaned data remains. |
 
-### Get Events for a Group
-
-| Aspect            | Details                                       |
-|-------------------|-----------------------------------------------|
-| **Route**         | `/group/events/:groupId`                     |
-| **HTTP Method**   | GET                                           |
-| **Headers**       | `Authorization`: Bearer Token                 |
-| **Query Parameters** | `groupId` (UUID): ID of the group         |
-| **Request Body**  | None                                          |
-| **Success Response** | **Code**: 200 OK                         |
-|                   | **Content**: Array of event objects           |
-| **Error Response**| **Code**: 404 Not Found                      |
-|                   | **Content**: `{ "error": "Group not found" }`|
-|                   | **Code**: 500 Internal Server Error          |
-|                   | **Content**: `{ "error": "Error message here" }` |
-| **Description**   | Retrieves all events associated with a specific group. Requires authentication. |
-
-### Get Polls for a Group
-
-| Aspect            | Details                                       |
-|-------------------|-----------------------------------------------|
-| **Route**         | `/group/polls/:groupId`                      |
-| **HTTP Method**   | GET                                           |
-| **Headers**       | `Authorization`: Bearer Token                 |
-| **Query Parameters** | `groupId` (UUID): ID of the group         |
-| **Request Body**  | None                                          |
-| **Success Response** | **Code**: 200 OK                         |
-|                   | **Content**: Array of poll objects            |
-| **Error Response**| **Code**: 404 Not Found                      |
-|                   | **Content**: `{ "error": "Group not found" }`|
-|                   | **Code**: 500 Internal Server Error          |
-|                   | **Content**: `{ "error": "Error message here" }` |
-| **Description**   | Retrieves all polls associated with a specific group. Requires authentication. |
-
 ### Get Group Feed
 
 | Aspect               | Details                                                                                              |
@@ -406,23 +344,6 @@
 |                      | **Code**: 500 Internal Server Error                                                                  |
 |                      | **Content**: `{ "error": "Internal Server Error", "details": "error description" }`                  |
 | **Description**      | This endpoint retrieves the most recent activities of a group, including events and polls, sorted from most recent to oldest. Each item in the feed is tagged with a `feedType` to identify whether it is an event or a poll and includes additional details specific to each type. Pagination is supported through the `start` query parameter, and only the first 20 entries are returned at a time. The user must be a member of the specified group to access the feed.|
-
-## Sentiment Endpoints
-
-### Get All Sentiments
-
-| Aspect            | Details                                       |
-|-------------------|-----------------------------------------------|
-| **Route**         | `/sentiment/get-sentiments`                             |
-| **HTTP Method**   | GET                                           |
-| **Headers**       | `Authorization`: Bearer Token                 |
-| **Query Parameters** | None                                      |
-| **Request Body**  | None                                          |
-| **Success Response** | **Code**: 200 OK                         |
-|                   | **Content**: Array of sentiment objects       |
-| **Error Response**| **Code**: 500 Internal Server Error          |
-|                   | **Content**: `{ "error": "Error message here" }` |
-| **Description**   | Retrieves a list of all sentiments available in the system. Requires authentication. |
 
 ## Type Endpoints
 
@@ -496,23 +417,6 @@
 |                   | **Content**: `{ "error": "Error message here" }` |
 | **Description**   | This endpoint allows for modifications to a poll's title and description, providing flexibility in managing poll lifecycle. |
 
-### Get Poll Information
-
-| Aspect            | Details                                       |
-|-------------------|-----------------------------------------------|
-| **Route**         | `/poll/info/:pollId`                               |
-| **HTTP Method**   | GET                                           |
-| **Headers**       | `Authorization`: Bearer Token, `Content-Type`: application/json |
-| **Query Parameters** | `pollId` (UUID): ID of the poll to retrieve |
-| **Request Body**  | None                                          |
-| **Success Response** | **Code**: 200 OK                         |
-|                   | **Content**: `{ "poll": { ... }, "questions": [{ ... }], "options": [{ ... }] }` |
-| **Error Response**| **Code**: 404 Not Found                      |
-|                   | **Content**: `{ "error": "Poll not found" }`|
-|                   | **Code**: 500 Internal Server Error          |
-|                   | **Content**: `{ "error": "Error message here" }` |
-| **Description**   | Retrieves detailed information about a specific poll, including its type, related questions, options with sentiments, and answers, offering a comprehensive view of the poll data. |
-
 ### Open Poll
 
 | Aspect            | Details                                       |
@@ -578,23 +482,6 @@
 |                   | **Content**: `{ "error": "Error message here" }` |
 | **Description**   | Creates a new event linked to a specific group and type, storing all relevant details such as title, description, location, date, and duration. |
 
-### Get Event Information
-
-| Aspect            | Details                                       |
-|-------------------|-----------------------------------------------|
-| **Route**         | `/event/info/:eventId`                              |
-| **HTTP Method**   | GET                                           |
-| **Headers**       | `Authorization`: Bearer Token, `Content-Type`: application/json |
-| **Query Parameters** | `eventId` (UUID): ID of the event         |
-| **Request Body**  | None                                          |
-| **Success Response** | **Code**: 200 OK                         |
-|                   | **Content**: `{ "event": {...} }`            |
-| **Error Response**| **Code**: 404 Not Found                      |
-|                   | **Content**: `{ "error": "Event not found" }`|
-|                   | **Code**: 500 Internal Server Error          |
-|                   | **Content**: `{ "error": "Error message here" }` |
-| **Description**   | Retrieves detailed information about a specific event, including its linkage to a group and event type. |
-
 ### Delete Event
 
 | Aspect            | Details                                       |
@@ -628,42 +515,6 @@
 |                   | **Code**: 500 Internal Server Error          |
 |                   | **Content**: `{ "error": "Error message here" }` |
 | **Description**   | Updates an existing event with new details as provided, allowing modifications to title, description, location, date, and duration. |
-
-## Question Endpoints
-
-### Edit Question
-
-| Aspect            | Details                                       |
-|-------------------|-----------------------------------------------|
-| **Route**         | `/question/edit-question/:questionId`                  |
-| **HTTP Method**   | PATCH                                         |
-| **Headers**       | `Authorization`: Bearer Token, `Content-Type`: application/json |
-| **Query Parameters** | `questionId` (UUID): ID of the question to edit |
-| **Request Body**  | `{ "question": "New Question?", "description": "New description", "date": "2021-01-01T00:00:00.000Z", "duration": 60 }` |
-| **Success Response** | **Code**: 200 OK                         |
-|                   | **Content**: `{ "message": "Question updated successfully", "question": {...} }` |
-| **Error Response**| **Code**: 404 Not Found                      |
-|                   | **Content**: `{ "error": "Question not found" }`|
-|                   | **Code**: 500 Internal Server Error          |
-|                   | **Content**: `{ "error": "Error message here" }` |
-| **Description**   | Updates an existing question with new details as provided. |
-
-### Delete Question
-
-| Aspect            | Details                                       |
-|-------------------|-----------------------------------------------|
-| **Route**         | `/question/delete-question/:questionId`                |
-| **HTTP Method**   | DELETE                                        |
-| **Headers**       | `Authorization`: Bearer Token, `Content-Type`: application/json |
-| **Query Parameters** | `questionId` (UUID): ID of the question to delete |
-| **Request Body**  | None                                          |
-| **Success Response** | **Code**: 200 OK                         |
-|                   | **Content**: `{ "message": "Question and all related answers deleted successfully" }` |
-| **Error Response**| **Code**: 404 Not Found                      |
-|                   | **Content**: `{ "error": "Question not found" }`|
-|                   | **Code**: 500 Internal Server Error          |
-|                   | **Content**: `{ "error": "Error message here" }` |
-| **Description**   | Deletes a question and automatically removes all related answers to maintain data integrity. |
 
 ## Answer Endpoints
 

@@ -17,15 +17,9 @@ router.use('/type', typeRoutes);
 router.use('/poll', pollRoutes);
 router.use('/answer', answerRoutes);
 
-// Handle 404 - Not found
+// Http 404 - Not found
 router.use((req, res, next) => {
   res.status(404).send('Sorry can\'t find that!');
 });
-
-//// Error handling middleware
-//router.use((err, req, res, next) => {
-//  console.error(err.stack);
-//  res.status(500).send('Something broke!');
-//});
 
 module.exports = router;
