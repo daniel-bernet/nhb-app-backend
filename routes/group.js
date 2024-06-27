@@ -211,8 +211,6 @@ router.get("/get-feed/:groupId", verifyToken, async (req, res) => {
 
   const { groupId } = req.params;
   const accountId = req.account.accountId;
-  const start = parseInt(req.query.start) || 0;
-  const limit = 20;
 
   try {
     const isMember = await GroupMember.count({
@@ -240,8 +238,6 @@ router.get("/get-feed/:groupId", verifyToken, async (req, res) => {
           "updatedAt",
           "TypeID",
         ],
-        limit: limit,
-        offset: start,
         order: [["updatedAt", "DESC"]],
         include: [{ model: Type, as: "eventType", attributes: ["Label"] }],
       },
@@ -260,8 +256,6 @@ router.get("/get-feed/:groupId", verifyToken, async (req, res) => {
           "TypeID",
           "IsClosed",
         ],
-        limit: limit,
-        offset: start,
         order: [["updatedAt", "DESC"]],
         include: [
           {
@@ -299,7 +293,7 @@ router.get("/get-feed/:groupId", verifyToken, async (req, res) => {
     combinedFeed.sort((a, b) => b.updatedAt - a.updatedAt);
 
     res.status(200).json({
-      data: combinedFeed.slice(0, limit),
+      data: combinedFeed,
       message: "Feed fetched successfully",
     });
   } catch (error) {

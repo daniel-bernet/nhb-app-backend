@@ -333,7 +333,7 @@
 | **Route**            | `/group/get-feed/:groupId`                                                                           |
 | **HTTP Method**      | GET                                                                                                  |
 | **Headers**          | `Authorization`: Bearer Token, `Content-Type`: application/json                                      |
-| **Query Parameters** | `start` (integer): Index from which the feed items should start. Default is 0.                       |
+| **Query Parameters** | `groupId` (UUID): Id of the group intended for the poll                                              |
 | **Request Body**     | None                                                                                                 |
 | **Success Response** | **Code**: 200 OK                                                                                     |
 |                      | **Content**: `{ "data": [{"id": "UUID", "title": "string", "description": "string", "updatedAt": "timestamp", "createdAt": "timestamp", "feedType": "event/poll", "typeLabel": "string", "additionalDetails": {...}}], "message": "Feed fetched successfully" }` |
@@ -343,7 +343,7 @@
 |                      | **Content**: `{ "error": "User is not a member of the group" }`                                      |
 |                      | **Code**: 500 Internal Server Error                                                                  |
 |                      | **Content**: `{ "error": "Internal Server Error", "details": "error description" }`                  |
-| **Description**      | This endpoint retrieves the most recent activities of a group, including events and polls, sorted from most recent to oldest. Each item in the feed is tagged with a `feedType` to identify whether it is an event or a poll and includes additional details specific to each type. Pagination is supported through the `start` query parameter, and only the first 20 entries are returned at a time. The user must be a member of the specified group to access the feed.|
+| **Description**      | This endpoint retrieves the most recent activities of a group, including events and polls, sorted from most recent to oldest. Each item in the feed is tagged with a `feedType` to identify whether it is an event or a poll and includes additional details specific to each type. The user must be a member of the specified group to access the feed.|
 
 ## Type Endpoints
 

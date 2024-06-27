@@ -31,6 +31,11 @@ router.post('/create-poll', verifyToken, async (req, res) => {
             Description: description
         }, { transaction });
 
+        // Fetch all group members
+        const members = await GroupMember.findAll({
+            where: { GroupID: groupID }
+        }, { transaction });
+
         for (const questionData of questions) {
             const question = await Question.create({
                 Question: questionData.questionText,
@@ -50,11 +55,6 @@ router.post('/create-poll', verifyToken, async (req, res) => {
                     OptionID: optionID
                 }, { transaction });
             }
-
-            // Fetch all group members
-            const members = await GroupMember.findAll({
-                where: { GroupID: groupID }
-            }, { transaction });
 
             // Create default answers using the unresolved OptionID
             for (const member of members) {
