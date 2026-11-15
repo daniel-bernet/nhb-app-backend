@@ -1,5 +1,5 @@
 # Stage 1: Build and install dependencies
-FROM node:14 as builder
+FROM node:24 AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
@@ -8,7 +8,7 @@ RUN npm install
 COPY . .
 
 # Stage 2: Setup the final image
-FROM node:14-slim
+FROM node:24-slim
 WORKDIR /usr/src/app
 COPY --from=builder /app .
 EXPOSE 9001
