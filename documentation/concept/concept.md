@@ -1,5 +1,7 @@
 # NHB-APP Concept
 
+> This is the concept as I wrote it before development, in June 2024. Some plans here (for example a progressive web app or WebSockets) were not built. The [README](../../README.md) describes what the prototype actually does.
+
 ## Introduction
 
 ### Target
@@ -14,7 +16,7 @@ I find that our organisation works generally great despite the usage of unoptimi
 
 ### The Band
 
-I'm part of a band called `NoHeadBand`. The band consists of 24 members between 17 and 28 years old with a wide variety of instruments ond limited free time. We play very flexible in relation to our repertoire (ländler, pop, rock, jazz etc.), composition (generally groups of 5 to 10) and events (from birthday parties to festivals). There for we have a lot of internal organisation for group casting for specifig gigs, attendance clarification, rehearsal date search, repertoire communication and date management.
+I'm part of a band called `NoHeadBand`. The band consists of 24 members with a wide variety of instruments ond limited free time. We play very flexible in relation to our repertoire (ländler, pop, rock, jazz etc.), composition (generally groups of 5 to 10) and events (from birthday parties to festivals). There for we have a lot of internal organisation for group casting for specifig gigs, attendance clarification, rehearsal date search, repertoire communication and date management.
 
 ### Target group
 
@@ -24,7 +26,7 @@ The target-group of this project consists of the members of our band with sole m
 
 The following diagram describes our basic internal workflow for a gig request. Followingly I will analyse key features and important corner stones.
 
-![workflow-band-to-gig](/documentation/concept/assets/band-to-gig.svg)
+![workflow-band-to-gig](assets/band-to-gig.svg)
 
 The general band to gig workflow contains three prevalent make or break decisions. Two of these decisions encompass the availability of the band members for eather the gig itself or rehearsals. The third (second within the flow-chart) refers to the presense of suitable repertoire for a specific gig. There for is my first conclusion that date-polls and availability of the band members are crucial for a successful gig (also observable in practise). Creating this workflow, especially the group and rehearsal/gig creation out of a poll, in a click trough stile software solution would be admirable and significantly decrease the workload and cross software information distribution. The implementation of the poll entity within a sensable ORM matter will be rather challenging and complex but valuable learning experience. Further observable is the significance of the repertoire knowledge and abundance within our band. There is a part of our band members that are rather knowledgable of a wide portion of our repertiore, on the other hand there are a lot that haven't or have rarely played a given set of songs. There for it would be rather beneficial if the band members could judge their knowledge of a song as well as a user and song specific played-at-gig counter. This song-knowledge overview would help assessment of rehearsal needs in advance as well as within a rehearsal-date-poll. On time sensitive gig requests the song-knowledge would already be taken in to consideration at the start, within the initial cast search, there for a public user specific overview would be enriching.
 
@@ -90,7 +92,7 @@ The following list of features are derived from the previous workflow analysis, 
 
 ### Project requrements
 
-As a starting point, in respect for the timeframe and complexity, for this endeavour and the scope of the Mod-164 project I would like to define and limit myself to the following requrements.
+As a starting point, in respect for the timeframe and complexity, for this endeavour and the scope of this school project I would like to define and limit myself to the following requrements.
 
 - Basic user management
 - You should be able to create groups for projects and gigs with specific members
@@ -106,7 +108,7 @@ Most importantly I want to take future features and development, at every step o
 
 ### ERD
 
-![ERD](/documentation/concept/assets/ERD_NHB-APP.svg)
+![ERD](assets/ERD_NHB-APP.svg)
 
 Each table further contains the fields `created_at` and `updated_at` not shown within the ERD.
 
@@ -132,17 +134,15 @@ The backend will be deployed as a docker container in similar fashion and alongs
 
 Backend related documentation can be found using the following links.
 
-- [API-Endpoints](/documentation/backend/api-endpoints.md)
-- [DB-Schema](/documentation/backend/db-tables.md)
-- [General Backend Documentation](/documentation/backend/backend-documentation.md)
-- [Setup Guide](/documentation/backend/setup.md)
-- [Deployment Guide](/documentation/backend/deployment.md)
+- [API-Endpoints](../backend/api-endpoints.md)
+- [DB-Schema](../backend/db-tables.md)
+- [Setup and deployment](../../README.md#how-to-run-it)
 
 ## Frontend
 
 ### Frontend Technology
 
-For the frontend side of this project I was torn between `Flutter` and `Angular-Ionic`. I've previously worked with Flutter for a school project involving a shoppinglist management mobile application. On the other side am I currently attending an ÜK where we employ the Angular and Ionic combination. There for I've decided to go with Angular and Ionic as I'm not as well versed with these frameworks and would like to deepen my understanding and secondly I expect the transition from progressive web app to website to website to be more natural and handable.
+For the frontend side of this project I was torn between `Flutter` and `Angular-Ionic`. I've previously worked with Flutter for a school project involving a shoppinglist management mobile application. On the other side am I currently attending a course where we employ the Angular and Ionic combination. There for I've decided to go with Angular and Ionic as I'm not as well versed with these frameworks and would like to deepen my understanding and secondly I expect the transition from progressive web app to website to website to be more natural and handable.
 
 ### Frontend Deployment
 
@@ -152,15 +152,14 @@ For the scope of this project I will deploy my application on my own device. Any
 
 Frontend related documentation and mockup, including description, can be found using the following links.
 
-- [Mobile application Mockup](/documentation/frontend/mockup.md)
-- [Frontend Documentation](/documentation/frontend/frontend-documentation.md)
+- [Mobile application Mockup](../frontend/mockup.md)
 
 ## Component diagram
 
 The following diagram displays the components of this project and their connection. I wont further go in to detail as I've talked about every part of this diagram in previous chapters.
 
-![component-diagram](/documentation/concept/assets/component_diagram_NHB-APP.svg)
+![component-diagram](assets/component_diagram_NHB-APP.svg)
 
 ## Project planning
 
-My project planning can be viewed within [this](/documentation/project_plan.xlsx), continuously evolving, excel document. The past timeline of the project-plan displays the active work and development done as part of this project.
+My project planning can be viewed within [this](../project_plan.xlsx), continuously evolving, excel document. The past timeline of the project-plan displays the active work and development done as part of this project.

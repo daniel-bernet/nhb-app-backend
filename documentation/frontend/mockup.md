@@ -53,4 +53,4 @@ These functionalities will provide users with full control over their account se
 
 ## Final Remarks
 
-My experience with Ionic-Angular technology was briefly over a five-day ÜK. Consequently, I am not that familiar with the Ionic framework. Given this, the provided mockup primarily serves as a guideline for the frontend development process. As I discover the extensive capabilities and components offered by Ionic, the actual implementation may there for differ significantly in both look and feel as well as functionality from this initial design.
+My experience with Ionic-Angular technology was briefly over a five-day course. Consequently, I am not that familiar with the Ionic framework. Given this, the provided mockup primarily serves as a guideline for the frontend development process. As I discover the extensive capabilities and components offered by Ionic, the actual implementation may there for differ significantly in both look and feel as well as functionality from this initial design.
