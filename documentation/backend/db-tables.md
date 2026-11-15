@@ -122,3 +122,46 @@
 | FK  | QuestionID     | UUID     | Yes      | No       | None    | Answered question|
 | FK  | GroupMemberID     | UUID     | Yes      | No       | None    | GroupMember providing answer|
 | FK  | OptionID     | UUID     | Yes      | No       | None    | As answer selected option|
+
+## Seed data
+
+The seeders (`seeders/`) fill the lookup tables with the following values.
+
+### Sentiment
+
+Describes how an answer option is evaluated.
+
+| SentimentID | Character | Sentiment  | Use case                          |
+| ----------- | --------- | ---------- | --------------------------------- |
+| 1           | u         | unanswered | default for unanswered questions  |
+| 2           | n         | no         | negative response                 |
+| 3           | y         | yes        | positive response                 |
+| 4           | i         | irrelevant | the response is irrelevant        |
+
+### Types
+
+Classifies events and polls.
+
+| Type        | Description                                           |
+| ----------- | ----------------------------------------------------- |
+| gig         | A gig is an event where the group plays               |
+| rehearsal   | A rehearsal is an event where the group practices     |
+| stamm       | A stamm is a casual band meetup                       |
+| meeting     | A meeting is a planning and organisational band event |
+| unspecified | Unspecified is the default without any implications   |
+
+### Band
+
+The `Band` table only contains one band, `NoHeadBand` (BandID 1). Multi-band support was planned but not built.
+
+### Options
+
+Options are fixed. Every answer starts as `unanswered`.
+
+| SentimentID | Option           | Description                                |
+| ----------- | ---------------- | ------------------------------------------ |
+| 1           | unanswered       | Default for unanswered questions           |
+| 2           | no               | Give a negative answer                     |
+| 3           | yes              | Give a positive answer                     |
+| 4           | i don't know yet | Pass up on giving an answer at this moment |
+| 4           | i don't care     | Give an undecided answer                   |
