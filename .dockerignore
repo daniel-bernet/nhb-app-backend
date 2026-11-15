@@ -1,1 +1,16 @@
 node_modules/
+npm-debug.log*
+
+# Never bake local configuration or credentials into the image
+.env
+.env.*
+!.env.example
+
+# Not needed at runtime
+.git
+.gitignore
+.dockerignore
+Dockerfile
+documentation/
+README.md
+LICENSE
